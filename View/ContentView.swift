@@ -1,20 +1,25 @@
 import SwiftUI
 
 struct ContentView: View {
-    let drumSounds = ["clap", "crash", "hihat", "kick", "rattle", "snap", "snare", "tom"]
-    var drumSoundModels: [SoundModel] {
-        drumSounds.map { SoundModel(soundName: $0) }
-    }
-    
     var body: some View {
-        VStack {
-            ForEach(0..<2) { row in
-                HStack {
-                    ForEach(0..<4) { column in
-                        DrumPadView(drumPadViewModel: DrumPadViewModel(soundModel: drumSoundModels[row * 4 + column]))
-                    }
+        GeometryReader { geometry in
+            HStack(spacing: 0) {
+                VStack {
+                    MainScreenView()
+                    DrumPadsContainerView()
                 }
+                .frame(width: geometry.size.width * 2 / 3)
+                .frame(maxHeight: .infinity)
+                
+                VStack(alignment: .leading) {
+                    MetronomeView(viewModel: MetronomeViewModel())
+                    Spacer()
+                }
+                .frame(width: geometry.size.width / 3)
+                .frame(maxHeight: .infinity)
+                .padding(10)
             }
+            .frame(maxHeight: .infinity)
         }
     }
 }
@@ -25,3 +30,4 @@ struct ContentView_Previews: PreviewProvider {
             .previewInterfaceOrientation(.landscapeLeft)
     }
 }
+

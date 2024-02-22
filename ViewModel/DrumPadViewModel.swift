@@ -19,19 +19,18 @@ class DrumPadViewModel: NSObject, ObservableObject, AVAudioPlayerDelegate {
     }
     
     private var playerQueue: [AVAudioPlayer] = []
-
+    
     init(soundModel: SoundModel) {
         self.soundModel = soundModel
     }
-
+    
     func playSound() {
-        guard let player = soundModel.createPlayer() else { return }
-        player.prepareToPlay()
-        player.play()
+        guard let player = soundModel.createPlayer(with: soundName) else { return }
         playerQueue.append(player)
         player.delegate = self
+        player.play()
     }
-
+    
     func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
         DispatchQueue.main.async {
             // Clean up the player from the queue when it finishes playing.
