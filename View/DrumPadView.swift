@@ -8,16 +8,17 @@
 import Foundation
 import SwiftUI
 
-struct DrumView: View {
-    @ObservedObject var viewModel: SoundViewModel
+struct DrumPadView: View {
+    @ObservedObject var drumPadViewModel: DrumPadViewModel
     @State private var isPressed = false
     
     var body: some View {
-        Text(viewModel.soundName.uppercased())
+        Text(drumPadViewModel.soundName.uppercased())
             .foregroundColor(.black)
             .bold()
             .frame(width: 100, height: 100)
-            .background(Color.white)
+            .background(isPressed ? Color.gray : Color.white )
+            .cornerRadius(10)
             .overlay(
                 RoundedRectangle(cornerRadius: 10)
                     .stroke(.black, lineWidth: 2)
@@ -27,11 +28,11 @@ struct DrumView: View {
                     .onChanged { _ in
                         if isPressed == false {
                             isPressed = true
-                            viewModel.playSound()
+                            drumPadViewModel.playSound()
                         }
                     }
                     .onEnded { _ in isPressed = false }
-                // Optionally, you can handle .onEnded if you want to do something when the press is released
             )
+            .animation(.easeInOut, value: isPressed)
     }
 }
