@@ -27,6 +27,30 @@ class AudioPlaybackService {
         }
     }
     
+    // Enhanced method to play a sound immediately or schedule it.
+    func playSound(named soundName: String, at time: AVAudioTime? = nil) {
+        let player = AVAudioPlayerNode()
+        audioEngine.attach(player)
+
+        guard let fileURL = Bundle.main.url(forResource: soundName, withExtension: "wav"),
+              let audioFile = try? AVAudioFile(forReading: fileURL) else {
+            print("Could not load file: \(soundName)")
+            return
+        }
+
+        audioEngine.connect(player, to: audioEngine.mainMixerNode, format: audioFile.processingFormat)
+        if let scheduledTime = time {
+            player.scheduleFile(audioFile, at: scheduledTime, completionHandler: nil)
+        } else {
+            player.scheduleFile(audioFile, at: nil, completionHandler: nil)
+            try? audioEngine.start()
+            player.play()
+        }
+
+        // Keep a reference if needed to stop later or manage playback state.
+        players.append(player)
+    }
+    
     func playTrack(_ track: TrackModel) {
         print(track)
         stopPlayback()
@@ -41,7 +65,7 @@ class AudioPlaybackService {
                 let player = AVAudioPlayerNode()
                 audioEngine.attach(player)
                 
-                let filename = mapPadIDToFilename(beat.padID)
+                let filename = AudioConfig.mapPadIDToDrumFile(beat.padID)
                 guard let fileURL = Bundle.main.url(forResource: filename, withExtension: "wav") else { continue }
                 let audioFile = try AVAudioFile(forReading: fileURL)
                 
@@ -76,27 +100,6 @@ class AudioPlaybackService {
     func stopPlayback() {
         players.forEach { $0.stop() }
         audioEngine.stop()
-    }
-    
-    private func mapPadIDToFilename(_ padID: Int) -> String {
-        switch padID {
-        case 0:
-            return "clap"
-        case 1:
-            return "crash"
-        case 2:
-            return "hihat"
-        case 3:
-            return "kick"
-        case 4:
-            return "rattle"
-        case 5:
-            return "snap"
-        case 6:
-            return "snare"
-        default:
-            return "tom"
-        }
     }
 }
 

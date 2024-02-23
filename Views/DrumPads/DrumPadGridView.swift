@@ -11,10 +11,6 @@ import SwiftUI
 struct DrumPadGridView: View {
     let trackViewModel: TrackViewModel
     
-    let drumSounds = ["clap", "crash", "hihat", "kick", "rattle", "snap", "snare", "tom"]
-    var drumSoundModels: [SoundModel] {
-        drumSounds.map { SoundModel(soundName: $0) }
-    }
     let numberOfRows: Int = 2
     let numberOfColumns: Int = 4
     let spacing: CGFloat = 10
@@ -31,7 +27,7 @@ struct DrumPadGridView: View {
                     HStack(spacing: spacing) {
                         ForEach(0..<numberOfColumns, id: \.self) { column in
                             let padID = row * numberOfColumns + column
-                            DrumPadView(viewModel: DrumPadViewModel(padID: padID, soundModel: drumSoundModels[padID], trackViewModel: trackViewModel))
+                            DrumPadView(viewModel: DrumPadViewModel(padID: padID, trackViewModel: trackViewModel))
                                 .frame(width: width, height: padHeight)
                         }
                     }

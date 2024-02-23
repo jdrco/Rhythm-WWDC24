@@ -13,11 +13,6 @@ class MetronomeViewModel: ObservableObject {
     @Published var isPlaying = false
     @Published var tempo: Int = 100
     private var timer: Timer?
-    private var soundModel: SoundModel
-    
-    init() {
-        self.soundModel = SoundModel(soundName: "metronome")
-    }
     
     func toggleMetronome() {
         isPlaying.toggle()
@@ -31,15 +26,13 @@ class MetronomeViewModel: ObservableObject {
     private func startMetronome() {
         stopMetronome()
         let interval = 60.0 / Double(tempo)
-        timer = Timer.scheduledTimer(withTimeInterval: interval, repeats: true) { [weak self] _ in        
-            self?.soundModel.player?.play()
+        timer = Timer.scheduledTimer(withTimeInterval: interval, repeats: true) { _ in
+            AudioPlaybackService.shared.playSound(named: "metronome")
         }
     }
     
     private func stopMetronome() {
         timer?.invalidate()
         timer = nil
-        soundModel.player?.stop()
-        soundModel.player?.currentTime = 0
     }
 }
