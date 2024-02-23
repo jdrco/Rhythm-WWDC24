@@ -17,6 +17,7 @@ let package = Package(
             name: "Rhythm-WWDC24",
             targets: ["AppModule"],
             bundleIdentifier: "jared.Rhythm-WWDC24",
+            teamIdentifier: "66LXP74YD7",
             displayVersion: "1.0",
             bundleVersion: "1",
             appIcon: .placeholder(icon: .note),

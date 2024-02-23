@@ -1,3 +1,10 @@
+//
+//  MainScreenView.swift
+//  Rhythm-WWDC24
+//
+//  Created by Jared Drueco on 2024-02-20.
+//
+
 import SwiftUI
 
 struct MainScreenView: View {
@@ -15,6 +22,5 @@ struct MainScreenView: View {
             RoundedRectangle(cornerRadius: 10)
                 .stroke(.black, lineWidth: 2)
         )
-        .padding(10)
     }
 }
