@@ -20,22 +20,22 @@ struct DrumPadGridView: View {
     let spacing: CGFloat = 10
     
     var body: some View {
-        VStack {
-            GeometryReader { geometry in
-                let width = (geometry.size.width - (spacing * CGFloat(numberOfColumns - 1))) / CGFloat(numberOfColumns)
-                let padHeight = width
-                
-                VStack(spacing: spacing) {
-                    ForEach(0..<numberOfRows, id: \.self) { row in
-                        HStack(spacing: spacing) {
-                            ForEach(0..<numberOfColumns, id: \.self) { column in
-                                let padID = row * numberOfColumns + column
-                                DrumPadView(viewModel: DrumPadViewModel(padID: padID, soundModel: drumSoundModels[padID], trackViewModel: trackViewModel))
-                                    .frame(width: width, height: padHeight)
-                            }
+        
+        GeometryReader { geometry in
+            let width = (geometry.size.width - (spacing * CGFloat(numberOfColumns - 1))) / CGFloat(numberOfColumns)
+            let padHeight = width
+
+            VStack(spacing: spacing) {
+                Spacer()
+                ForEach(0..<numberOfRows, id: \.self) { row in
+                    HStack(spacing: spacing) {
+                        ForEach(0..<numberOfColumns, id: \.self) { column in
+                            let padID = row * numberOfColumns + column
+                            DrumPadView(viewModel: DrumPadViewModel(padID: padID, soundModel: drumSoundModels[padID], trackViewModel: trackViewModel))
+                                .frame(width: width, height: padHeight)
                         }
-                        .frame(height: padHeight)
                     }
+                    .frame(height: padHeight)
                 }
             }
         }

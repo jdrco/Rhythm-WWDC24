@@ -15,7 +15,7 @@ struct ContentView: View {
                 }
                 .frame(width: geometry.size.width * 2 / 3)
                 .frame(minHeight: geometry.size.height)
-
+                
                 VStack(alignment: .center) {
                     MetronomeView(viewModel: MetronomeViewModel())
                     PlayRecView(viewModel: trackViewModel)
@@ -24,15 +24,16 @@ struct ContentView: View {
                 .frame(minHeight: geometry.size.height)
             }
         }
-        .padding(30)
+        .padding(40)
     }
-}
 
+}
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
             .previewInterfaceOrientation(.landscapeLeft)
+            .edgesIgnoringSafeArea(.all)
     }
 }
 

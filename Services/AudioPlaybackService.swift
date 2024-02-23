@@ -26,9 +26,7 @@ class AudioPlaybackService {
             print("Failed to set up audio session: \(error)")
         }
     }
-}
-
-extension AudioPlaybackService {
+    
     func playTrack(_ track: TrackModel) {
         print(track)
         stopPlayback()
@@ -65,7 +63,7 @@ extension AudioPlaybackService {
         }
         
         // Start the audio engine
-        let tmp = audioEngine.mainMixerNode
+        let _ = audioEngine.mainMixerNode
         do {
             try audioEngine.start()
             // Start playback for all players
@@ -81,7 +79,6 @@ extension AudioPlaybackService {
     }
     
     private func mapPadIDToFilename(_ padID: Int) -> String {
-        // Implement mapping from padID to filename
         switch padID {
         case 0:
             return "clap"
