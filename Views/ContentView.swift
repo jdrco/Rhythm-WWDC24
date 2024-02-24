@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct ContentView: View {
-    let trackViewModel = TrackViewModel(tempo: 100, numberOfBars: 1)
+    let trackViewModel = TrackViewModel(tempo: 60, numberOfBars: 1)
 //    let trackViewModel = MetronomeViewModel()
 
     var body: some View {

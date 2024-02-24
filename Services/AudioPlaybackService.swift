@@ -9,10 +9,34 @@ import AVFoundation
 
 class AudioPlaybackService {
     static let shared = AudioPlaybackService()
-    private var players = [AVAudioPlayerNode]()
+    private var playerPool = [AVAudioPlayerNode]()
     private let engineService = AudioEngineService.shared
     private var isLooping = false
     private var loopTimer: Timer?
+    private var activePlayers = [AVAudioPlayerNode]()
+    
+    init() {
+        // Pre-initialize a pool of player nodes to avoid creating them on the fly.
+        preparePlayerPool()
+    }
+    
+    private func preparePlayerPool(size: Int = 10) {
+        for _ in 0..<size {
+            let player = AVAudioPlayerNode()
+            engineService.audioEngine.attach(player)
+            playerPool.append(player)
+        }
+    }
+    
+    private func getPlayerFromPool() -> AVAudioPlayerNode? {
+        if playerPool.isEmpty {
+            let player = AVAudioPlayerNode()
+            engineService.audioEngine.attach(player)
+            return player
+        } else {
+            return playerPool.removeFirst()
+        }
+    }
     
     private func loadAudioFile(named filename: String) -> AVAudioFile? {
         guard let fileURL = Bundle.main.url(forResource: filename, withExtension: "wav") else {
@@ -23,15 +47,98 @@ class AudioPlaybackService {
     }
     
     func playSound(named soundName: String, at time: AVAudioTime? = nil) {
-        let player = AVAudioPlayerNode()
-        engineService.audioEngine.attach(player)
         guard let audioFile = loadAudioFile(named: soundName) else { return }
         
-        engineService.audioEngine.connect(player, to: engineService.audioEngine.mainMixerNode, format: audioFile.processingFormat)
-        player.scheduleFile(audioFile, at: time, completionHandler: nil)
-        engineService.startEngine()
-        player.play()
-        players.append(player)
+        if let player = getPlayerFromPool() {
+            engineService.audioEngine.attach(player)
+            engineService.audioEngine.connect(player, to: engineService.audioEngine.mainMixerNode, format: audioFile.processingFormat)
+            player.scheduleFile(audioFile, at: time, completionHandler: {
+                // Return the player to the pool after playing
+                DispatchQueue.main.async { [weak self] in
+                    self?.returnPlayerToPool(player: player)
+                }
+            })
+            
+            if !engineService.audioEngine.isRunning {
+                print("had to turnon engine")
+                engineService.startEngine()
+            }
+            
+            print("About to play sound: \(soundName)")
+            player.play()
+            activePlayers.append(player)
+        }
+    }
+    
+    private func returnPlayerToPool(player: AVAudioPlayerNode) {
+        if let index = activePlayers.firstIndex(of: player) {
+            activePlayers.remove(at: index)
+            playerPool.append(player)
+        }
+    }
+    
+    func playTrack(_ track: TrackModel) {
+        if track.beats.isEmpty {
+            print("No track to be played")
+            return
+        }
+        
+        // No need to reset engine if it's already running
+        if !engineService.audioEngine.isRunning {
+            engineService.startEngine()
+        }
+        
+        for beat in track.beats {
+            let filename = AudioConfig.mapPadIDToDrumFile(beat.padID)
+            guard let audioFile = loadAudioFile(named: filename) else {
+                print("Could not load audio file: \(filename)")
+                continue
+            }
+            
+            if let player = getPlayerFromPool() {
+                setupPlaybackFor(player: player, with: audioFile, atBeat: beat)
+                activePlayers.append(player)
+            }
+        }
+        
+        // Start playback without restarting the engine
+        activePlayers.forEach { $0.play() }
+        
+        // Cleanup if not looping
+        if !isLooping {
+            DispatchQueue.main.asyncAfter(deadline: .now() + track.totalDuration) {
+                self.stopPlayback()
+            }
+        }
+    }
+    
+    func loopTrack(_ track: TrackModel) {
+        stopPlayback() // Stop any current playback
+        isLooping = true
+        
+        let trackDuration = track.totalDuration
+        playTrack(track)
+        
+        loopTimer?.invalidate()
+        loopTimer = Timer.scheduledTimer(withTimeInterval: trackDuration, repeats: true) { [weak self] _ in
+            guard let self = self, self.isLooping else { return }
+            self.playTrack(track) // Re-play the track at the end of each loop
+        }
+    }
+    
+    func stopPlayback() {
+        isLooping = false
+        loopTimer?.invalidate()
+        loopTimer = nil
+        
+        activePlayers.forEach { player in
+            player.stop()
+            // Return player to pool instead of detaching
+            if let index = self.activePlayers.firstIndex(of: player) {
+                self.activePlayers.remove(at: index)
+                self.playerPool.append(player)
+            }
+        }
     }
     
     private func setupPlaybackFor(player: AVAudioPlayerNode, with audioFile: AVAudioFile, atBeat beat: Beat) {
@@ -41,63 +148,5 @@ class AudioPlaybackService {
         
         engineService.audioEngine.connect(player, to: engineService.audioEngine.mainMixerNode, format: audioFile.processingFormat)
         player.scheduleFile(audioFile, at: time, completionHandler: nil)
-        players.append(player)
-    }
-    
-    func loopTrack(_ track: TrackModel) {
-        stopPlayback() // Stop any current playback
-        isLooping = true
-        
-        let trackDuration = track.totalDuration
-        playTrack(track) // Play the track initially
-        
-        // Schedule the track to loop
-        loopTimer?.invalidate() // Invalidate any existing timer
-        loopTimer = Timer.scheduledTimer(withTimeInterval: trackDuration, repeats: true) { [weak self] _ in
-            guard let self = self, self.isLooping else { return }
-            self.playTrack(track) // Re-play the track at the end of each loop
-        }
-    }
-    
-    func playTrack(_ track: TrackModel) {
-        if track.beats.count == 0 {
-            print("No track to be played")
-            return
-        }
-        engineService.resetEngine()
-        
-        for beat in track.beats {
-            let filename = AudioConfig.mapPadIDToDrumFile(beat.padID)
-            guard let audioFile = loadAudioFile(named: filename) else {
-                print("Could not load audio file: \(filename)")
-                continue
-            }
-            
-            let player = AVAudioPlayerNode()
-            engineService.audioEngine.attach(player)
-            setupPlaybackFor(player: player, with: audioFile, atBeat: beat)
-        }
-        
-        engineService.startEngine()
-        players.forEach { $0.play() }
-        
-        // If not looping, reset players after track duration to clean up resources
-        if !isLooping {
-            DispatchQueue.main.asyncAfter(deadline: .now() + track.totalDuration) {
-                self.stopPlayback()
-            }
-        }
-    }
-    
-    func stopPlayback() {
-        isLooping = false
-        loopTimer?.invalidate()
-        loopTimer = nil
-        
-        players.forEach { $0.stop() }
-        players.removeAll { player in
-            engineService.audioEngine.detach(player)
-            return true
-        }
     }
 }

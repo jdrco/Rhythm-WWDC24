@@ -39,7 +39,7 @@ class TrackViewModel: ObservableObject {
             startPlayback()
         } else {
             print("Stop recording")
-            self.stopPlayback()
+            stopPlayback()
             recordingStartTime = nil
             // TODO: process/save the recording as needed
         }
@@ -78,6 +78,7 @@ class TrackViewModel: ObservableObject {
         trackModel = TrackModel(tempo: trackModel.tempo, numberOfBars: trackModel.numberOfBars)
         isRecording = false
         isPlaying = false
+        recordingStartTime = nil
     }
     
     private func playMetronomeSound() {
