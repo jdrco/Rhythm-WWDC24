@@ -9,7 +9,7 @@ import SwiftUI
 
 struct PlayRecView: View {
     @ObservedObject var trackViewModel: TrackViewModel
-    @ObservedObject var metronomeViewModel: MetronomeViewModel
+//    @ObservedObject var trackViewModel: MetronomeViewModel
     
     var body: some View {
         HStack {
@@ -17,10 +17,10 @@ struct PlayRecView: View {
             Button(action: {
                 trackViewModel.toggleRecording()
                 if trackViewModel.isRecording {
-                    metronomeViewModel.resetMetronome()
-                    metronomeViewModel.startMetronome()
+                    trackViewModel.resetMetronome()
+                    trackViewModel.startMetronome()
                 } else {
-                    metronomeViewModel.resetMetronome()
+                    trackViewModel.resetMetronome()
                 }
             }) {
                 Image(systemName: trackViewModel.isRecording ? "stop.circle" : "record.circle")
@@ -40,10 +40,10 @@ struct PlayRecView: View {
             Button(action: {
                 if trackViewModel.isPlaying {
                     trackViewModel.stopPlayback()
-                    metronomeViewModel.stopMetronome()
+                    trackViewModel.stopMetronome()
                 } else {
                     trackViewModel.startPlayback()
-                    metronomeViewModel.startMetronome()
+                    trackViewModel.startMetronome()
                 }
             }) {
                 Image(systemName: "play.circle")
@@ -63,7 +63,7 @@ struct PlayRecView: View {
             // Clear Button
             Button(action: {
                 trackViewModel.clearTrack()
-                metronomeViewModel.stopMetronome()
+                trackViewModel.stopMetronome()
             }) {
                 Image(systemName: "trash.circle")
                     .resizable()

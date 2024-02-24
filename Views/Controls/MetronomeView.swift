@@ -10,7 +10,7 @@ import SwiftUI
 
 struct MetronomeView: View {
     @ObservedObject var trackViewModel: TrackViewModel
-    @ObservedObject var metronomeViewModel: MetronomeViewModel
+//    @ObservedObject var trackViewModel: MetronomeViewModel
     @State private var showingTempoPicker = false
     
     var body: some View {
@@ -18,7 +18,7 @@ struct MetronomeView: View {
             Button(action: {
                 showingTempoPicker = true
             }) {
-                Text("\(metronomeViewModel.tempo) BPM")
+                Text("\(trackViewModel.tempo) BPM")
                     .foregroundColor(.primary)
                     .padding()
                     .overlay(
@@ -30,7 +30,7 @@ struct MetronomeView: View {
                 VStack {
                     Text("Select Tempo")
                         .font(.headline)
-                    Picker("Tempo", selection: $metronomeViewModel.tempo) {
+                    Picker("Tempo", selection: $trackViewModel.tempo) {
                         ForEach(40...240, id: \.self) { bpm in
                             Text("\(bpm) BPM").tag(bpm)
                         }
@@ -41,12 +41,12 @@ struct MetronomeView: View {
             }
             
             Button(action: {
-                metronomeViewModel.isActivated.toggle()
+                trackViewModel.metronomeActivated.toggle()
             }) {
                 Image(systemName: "metronome")
-                    .foregroundColor(metronomeViewModel.isActivated ? Color.white : Color.black)
+                    .foregroundColor(trackViewModel.metronomeActivated ? Color.white : Color.black)
                     .padding()
-                    .background(metronomeViewModel.isActivated ? Color.black : Color.clear)
+                    .background(trackViewModel.metronomeActivated ? Color.black : Color.clear)
                     .cornerRadius(10) 
                     .overlay(
                         RoundedRectangle(cornerRadius: 10)

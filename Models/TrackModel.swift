@@ -18,7 +18,7 @@ class TrackModel {
     var tempo: Int // BPM (beats per minute)
     var numberOfBars: Int
     
-    init(tempo: Int = 120, numberOfBars: Int = 1) {
+    init(tempo: Int, numberOfBars: Int) {
         self.tempo = tempo
         self.numberOfBars = numberOfBars
     }

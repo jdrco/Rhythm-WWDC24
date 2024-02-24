@@ -2,7 +2,7 @@ import SwiftUI
 
 struct ContentView: View {
     let trackViewModel = TrackViewModel(tempo: 100, numberOfBars: 1)
-    let metronomeViewModel = MetronomeViewModel()
+//    let trackViewModel = MetronomeViewModel()
 
     var body: some View {
         GeometryReader { geometry in
@@ -18,8 +18,8 @@ struct ContentView: View {
                 .frame(minHeight: geometry.size.height)
                 
                 VStack(alignment: .center) {
-                    MetronomeView(trackViewModel: trackViewModel, metronomeViewModel: metronomeViewModel)
-                    PlayRecView(trackViewModel: trackViewModel, metronomeViewModel: metronomeViewModel)
+                    MetronomeView(trackViewModel: trackViewModel)
+                    PlayRecView(trackViewModel: trackViewModel)
                 }
                 .frame(width: geometry.size.width / 3)
                 .frame(minHeight: geometry.size.height)
