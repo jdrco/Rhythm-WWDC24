@@ -60,11 +60,9 @@ class AudioPlaybackService {
             })
             
             if !engineService.audioEngine.isRunning {
-                print("had to turnon engine")
                 engineService.startEngine()
             }
             
-            print("About to play sound: \(soundName)")
             player.play()
             activePlayers.append(player)
         }

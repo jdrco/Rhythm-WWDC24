@@ -5,6 +5,7 @@ struct RhythmApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environmentObject(AudioEngineService.shared)
         }
     }
 }

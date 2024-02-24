@@ -7,11 +7,13 @@
 
 import AVFoundation
 
-class AudioEngineService {
+class AudioEngineService: ObservableObject {
     static let shared = AudioEngineService()
     let audioEngine = AVAudioEngine()
     
-    init() {
+    @Published var isRunning: Bool = false
+    
+    private init() {
         setupAudioSession()
     }
     
@@ -29,6 +31,9 @@ class AudioEngineService {
         guard !audioEngine.isRunning else { return }
         do {
             try audioEngine.start()
+            DispatchQueue.main.async {
+                self.isRunning = true
+            }
         } catch {
             print("Error starting audio engine: \(error)")
         }
@@ -36,10 +41,16 @@ class AudioEngineService {
     
     func stopEngine() {
         audioEngine.stop()
+        DispatchQueue.main.async {
+            self.isRunning = false
+        }
     }
     
     func resetEngine() {
         audioEngine.stop()
         audioEngine.reset()
+        DispatchQueue.main.async {
+            self.isRunning = false
+        }
     }
 }

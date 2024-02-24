@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct PlayRecView: View {
+    @EnvironmentObject var engineService: AudioEngineService
     @ObservedObject var trackViewModel: TrackViewModel
-//    @ObservedObject var trackViewModel: MetronomeViewModel
     
     var body: some View {
         HStack {
@@ -35,6 +35,8 @@ struct PlayRecView: View {
                             .stroke(.black, lineWidth: 2)
                     )
             }
+            .disabled(!engineService.isRunning)
+            
             
             // Play/Stop Button
             Button(action: {
@@ -58,7 +60,7 @@ struct PlayRecView: View {
                             .stroke(.black, lineWidth: 2)
                     )
             }
-            .disabled(trackViewModel.isRecording)
+            .disabled(trackViewModel.isRecording || !engineService.isRunning)
             
             // Clear Button
             Button(action: {
@@ -76,6 +78,7 @@ struct PlayRecView: View {
                             .stroke(.black, lineWidth: 2)
                     )
             }
+            .disabled(!engineService.isRunning)
         }
         .frame(height: 50)
         .padding()

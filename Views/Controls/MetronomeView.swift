@@ -9,8 +9,8 @@ import Foundation
 import SwiftUI
 
 struct MetronomeView: View {
+    @EnvironmentObject var engineService: AudioEngineService
     @ObservedObject var trackViewModel: TrackViewModel
-//    @ObservedObject var trackViewModel: MetronomeViewModel
     @State private var showingTempoPicker = false
     
     var body: some View {
@@ -39,6 +39,7 @@ struct MetronomeView: View {
                 }
                 .padding()
             }
+            .disabled(!engineService.isRunning)
             
             Button(action: {
                 trackViewModel.metronomeActivated.toggle()
@@ -53,6 +54,7 @@ struct MetronomeView: View {
                             .stroke(.black, lineWidth: 2)
                     )
             }
+            .disabled(!engineService.isRunning)
         }
     }
 }

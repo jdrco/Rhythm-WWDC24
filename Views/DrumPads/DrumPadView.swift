@@ -9,6 +9,7 @@ import Foundation
 import SwiftUI
 
 struct DrumPadView: View {
+    @EnvironmentObject var engineService: AudioEngineService
     let padID: Int
     @ObservedObject var trackViewModel: TrackViewModel
     @State private var isPressed = false
@@ -29,7 +30,7 @@ struct DrumPadView: View {
                 .gesture(
                     DragGesture(minimumDistance: 0)
                         .onChanged { _ in
-                            if isPressed == false {
+                            if isPressed == false && engineService.isRunning {
                                 isPressed = true
                                 trackViewModel.trackPlayedSound(padID: padID)
                             }
