@@ -11,6 +11,8 @@ class AudioPlaybackService {
     static let shared = AudioPlaybackService()
     private var players = [AVAudioPlayerNode]()
     private let engineService = AudioEngineService.shared
+    private var isLooping = false
+    private var loopTimer: Timer?
     
     private func loadAudioFile(named filename: String) -> AVAudioFile? {
         guard let fileURL = Bundle.main.url(forResource: filename, withExtension: "wav") else {
@@ -42,6 +44,21 @@ class AudioPlaybackService {
         players.append(player)
     }
     
+    func loopTrack(_ track: TrackModel) {
+        stopPlayback() // Stop any current playback
+        isLooping = true
+        
+        let trackDuration = track.totalDuration
+        playTrack(track) // Play the track initially
+        
+        // Schedule the track to loop
+        loopTimer?.invalidate() // Invalidate any existing timer
+        loopTimer = Timer.scheduledTimer(withTimeInterval: trackDuration, repeats: true) { [weak self] _ in
+            guard let self = self, self.isLooping else { return }
+            self.playTrack(track) // Re-play the track at the end of each loop
+        }
+    }
+    
     func playTrack(_ track: TrackModel) {
         if track.beats.count == 0 {
             print("No track to be played")
@@ -63,9 +80,20 @@ class AudioPlaybackService {
         
         engineService.startEngine()
         players.forEach { $0.play() }
+        
+        // If not looping, reset players after track duration to clean up resources
+        if !isLooping {
+            DispatchQueue.main.asyncAfter(deadline: .now() + track.totalDuration) {
+                self.stopPlayback()
+            }
+        }
     }
     
     func stopPlayback() {
+        isLooping = false
+        loopTimer?.invalidate()
+        loopTimer = nil
+        
         players.forEach { $0.stop() }
         players.removeAll { player in
             engineService.audioEngine.detach(player)

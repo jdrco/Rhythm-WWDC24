@@ -63,6 +63,7 @@ struct PlayRecView: View {
             // Clear Button
             Button(action: {
                 trackViewModel.clearTrack()
+                metronomeViewModel.stopMetronome()
             }) {
                 Image(systemName: "trash.circle")
                     .resizable()

@@ -16,23 +16,19 @@ class MetronomeViewModel: ObservableObject {
     private var currentBeat = 1
     
     private func playMetronomeSound() {
-        if currentBeat == 1 {
-            AudioPlaybackService.shared.playSound(named: "metronome")
-        } else {
-            AudioPlaybackService.shared.playSound(named: "metronomeLow")
+        if isActivated {
+            if currentBeat == 1 {
+                AudioPlaybackService.shared.playSound(named: "metronome")
+            } else {
+                AudioPlaybackService.shared.playSound(named: "metronomeLow")
+            }
         }
-        
         // Increment and wrap the current beat counter
         currentBeat = (currentBeat % 4) + 1
     }
     
     func startMetronome() {
-        if !isActivated {
-            return
-        }
-        
-        currentBeat = 1
-        stopMetronome() // Ensure any existing metronome is stopped before starting a new one
+        resetMetronome()
         
         // Play the first sound immediately to avoid initial delay
         playMetronomeSound()
@@ -52,6 +48,5 @@ class MetronomeViewModel: ObservableObject {
     func resetMetronome() {
         stopMetronome()
         currentBeat = 1
-        isActivated = true
     }
 }

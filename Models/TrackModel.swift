@@ -10,8 +10,7 @@ import SwiftUI
 
 struct Beat {
     let padID: Int
-    let startTime: TimeInterval // Time offset from the start of the track when the beat was initiated
-//    let duration: TimeInterval // Duration the pad was held down for
+    let startTime: TimeInterval
 }
 
 class TrackModel {

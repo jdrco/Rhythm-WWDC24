@@ -52,7 +52,7 @@ class TrackViewModel: ObservableObject {
     func startPlayback() {
         guard !isRecording, !isPlaying else { return }
         isPlaying = true
-        AudioPlaybackService.shared.playTrack(trackModel)
+        AudioPlaybackService.shared.loopTrack(trackModel)
     }
     
     func stopPlayback() {
