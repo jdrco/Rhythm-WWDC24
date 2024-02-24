@@ -1,5 +1,5 @@
 //
-//  PlayRecView.swift
+//  PlaybackControlView.swift
 //  Rhythm-WWDC24
 //
 //  Created by Jared Drueco on 2024-02-22.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct PlayRecView: View {
+struct PlaybackControlView: View {
     @EnvironmentObject var audioEngineService: AudioEngineService
     @ObservedObject var trackViewModel: TrackViewModel
     
@@ -32,7 +32,7 @@ struct PlayRecView: View {
                     .cornerRadius(10)
                     .overlay(
                         RoundedRectangle(cornerRadius: 10)
-                            .stroke(.black, lineWidth: 2)
+                            .stroke(.black, lineWidth: 1.5)
                     )
             }
             .disabled(!audioEngineService.isRunning)
@@ -57,7 +57,7 @@ struct PlayRecView: View {
                     .cornerRadius(10)
                     .overlay(
                         RoundedRectangle(cornerRadius: 10)
-                            .stroke(.black, lineWidth: 2)
+                            .stroke(.black, lineWidth: 1.5)
                     )
             }
             .disabled(trackViewModel.isRecording || !audioEngineService.isRunning)
@@ -75,7 +75,7 @@ struct PlayRecView: View {
                     .background(Color.clear)
                     .overlay(
                         RoundedRectangle(cornerRadius: 10)
-                            .stroke(.black, lineWidth: 2)
+                            .stroke(.black, lineWidth: 1.5)
                     )
             }
             .disabled(!audioEngineService.isRunning)

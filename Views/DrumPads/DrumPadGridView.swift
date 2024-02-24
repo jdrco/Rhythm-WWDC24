@@ -13,27 +13,31 @@ struct DrumPadGridView: View {
     
     let numberOfRows: Int = 2
     let numberOfColumns: Int = 4
-    let spacing: CGFloat = 10
+    let spacing: CGFloat = 25
     
     var body: some View {
         
         GeometryReader { geometry in
-            let width = (geometry.size.width - (spacing * CGFloat(numberOfColumns - 1))) / CGFloat(numberOfColumns)
-            let padHeight = width
+            let padWidth = (geometry.size.width - (spacing * CGFloat(numberOfColumns - 1))) / CGFloat(numberOfColumns)
+            let padHeight = padWidth
 
-            VStack(spacing: spacing) {
+            VStack {
                 Spacer()
-                ForEach(0..<numberOfRows, id: \.self) { row in
-                    HStack(spacing: spacing) {
-                        ForEach(0..<numberOfColumns, id: \.self) { column in
-                            let padID = row * numberOfColumns + column
-                            DrumPadView(padID: padID, trackViewModel: trackViewModel)
-                                .frame(width: width, height: padHeight)
+                VStack(spacing: spacing) {
+                    ForEach(0..<numberOfRows, id: \.self) { row in
+                        HStack(spacing: spacing) {
+                            ForEach(0..<numberOfColumns, id: \.self) { column in
+                                let padID = row * numberOfColumns + column
+                                DrumPadView(padID: padID, trackViewModel: trackViewModel)
+                                    .frame(width: padWidth, height: padHeight)
+                            }
                         }
+                        .frame(height: padHeight)
                     }
-                    .frame(height: padHeight)
                 }
             }
+            .frame(minHeight: 0, maxHeight: .infinity, alignment: .top)
         }
+        .border(Color.green, width: 1)
     }
 }

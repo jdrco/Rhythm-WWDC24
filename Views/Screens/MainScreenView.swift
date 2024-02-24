@@ -16,11 +16,11 @@ struct MainScreenView: View {
             
             Text("Main Screen Content")
                 .foregroundColor(.white)
-            
         }
         .overlay(
             RoundedRectangle(cornerRadius: 10)
-                .stroke(.black, lineWidth: 2)
+                .stroke(.black, lineWidth: 1.5)
         )
+        .frame(minHeight: 0, maxHeight: .infinity, alignment: .top)
     }
 }

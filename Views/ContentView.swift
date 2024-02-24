@@ -4,43 +4,39 @@ struct ContentView: View {
     @EnvironmentObject var audioEngineService: AudioEngineService
     @EnvironmentObject var audioPlaybackService: AudioPlaybackService
     let trackViewModel = TrackViewModel(tempo: 60, numberOfBars: 1)
+    let leftPortionSize = 0.64
+    let rightPortionSize = 0.36
     
     var body: some View {
         GeometryReader { geometry in
-            HStack(spacing: 0) {
-                VStack(spacing: 0) {
+            VStack(spacing: 0) {
+                HStack() {
                     MainScreenView()
-                        .frame(minHeight: 0, maxHeight: .infinity, alignment: .top)
-                    DrumPadGridView(trackViewModel: trackViewModel)
-                        .frame(minHeight: 0, maxHeight: .infinity, alignment: .bottom)
+                        .frame(width: geometry.size.width * (leftPortionSize))
+                    .border(Color.red, width: 1)
+                    AudioControlView(trackViewModel: trackViewModel)
+                        .frame(width: geometry.size.width * (rightPortionSize))
                 }
-                .frame(width: geometry.size.width * 2 / 3)
-                .frame(minHeight: geometry.size.height)
+                .frame(maxWidth: .infinity)
+                .border(Color.red, width: 1)
                 
-                VStack(alignment: .center) {
-                    Button(action: {
-                        audioPlaybackService.playSound(named: "click")
-                        audioEngineService.isRunning.toggle()
-                    }) {
-                        Image(systemName: "power.circle")
-                            .padding(10)
-                            .foregroundColor(.black)
-                            .background(Color.clear)
-                            .cornerRadius(10)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 10)
-                                    .stroke(.black, lineWidth: 2)
-                            )
+                HStack() {
+                    DrumPadGridView(trackViewModel: trackViewModel)
+                        .frame(width: geometry.size.width * (leftPortionSize))
+                    VStack {
+                        OptionControlView(trackViewModel: trackViewModel)
+                        PlaybackControlView(trackViewModel: trackViewModel)
                     }
-                    MetronomeView(trackViewModel: trackViewModel)
-                    PlayRecView(trackViewModel: trackViewModel)
+                    .frame(width: geometry.size.width * (rightPortionSize))
                 }
-                .frame(width: geometry.size.width / 3)
-                .frame(minHeight: geometry.size.height)
+                .frame(maxWidth: .infinity)
+                .border(Color.red, width: 1)
             }
+            .frame(maxHeight: geometry.size.height)
+            .border(Color.blue, width: 1)
         }
-        .padding(40)
-        .ignoresSafeArea(.all)
+        .padding(50)
+        .edgesIgnoringSafeArea(.all)
     }
 }
 
