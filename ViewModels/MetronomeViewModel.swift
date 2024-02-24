@@ -10,29 +10,48 @@ import SwiftUI
 import AVFoundation
 
 class MetronomeViewModel: ObservableObject {
-    @Published var isPlaying = false
+    @Published var isActivated = true
     @Published var tempo: Int = 100
     private var timer: Timer?
+    private var currentBeat = 1
     
-    func toggleMetronome() {
-        isPlaying.toggle()
-        if isPlaying {
-            startMetronome()
-        } else {
-            stopMetronome()
-        }
-    }
-    
-    private func startMetronome() {
-        stopMetronome()
-        let interval = 60.0 / Double(tempo)
-        timer = Timer.scheduledTimer(withTimeInterval: interval, repeats: true) { _ in
+    private func playMetronomeSound() {
+        if currentBeat == 1 {
             AudioPlaybackService.shared.playSound(named: "metronome")
+        } else {
+            AudioPlaybackService.shared.playSound(named: "metronomeLow")
+        }
+        
+        // Increment and wrap the current beat counter
+        currentBeat = (currentBeat % 4) + 1
+    }
+    
+    func startMetronome() {
+        if !isActivated {
+            return
+        }
+        
+        currentBeat = 1
+        stopMetronome() // Ensure any existing metronome is stopped before starting a new one
+        
+        // Play the first sound immediately to avoid initial delay
+        playMetronomeSound()
+        
+        // Schedule the timer to repeat at the specified interval
+        let interval = 60.0 / Double(tempo)
+        timer = Timer.scheduledTimer(withTimeInterval: interval, repeats: true) { [weak self] _ in
+            self?.playMetronomeSound()
         }
     }
     
-    private func stopMetronome() {
+    func stopMetronome() {
         timer?.invalidate()
         timer = nil
+    }
+    
+    func resetMetronome() {
+        stopMetronome()
+        currentBeat = 1
+        isActivated = true
     }
 }

@@ -2,6 +2,7 @@ import SwiftUI
 
 struct ContentView: View {
     let trackViewModel = TrackViewModel(tempo: 100, numberOfBars: 1)
+    let metronomeViewModel = MetronomeViewModel()
 
     var body: some View {
         GeometryReader { geometry in
@@ -17,16 +18,16 @@ struct ContentView: View {
                 .frame(minHeight: geometry.size.height)
                 
                 VStack(alignment: .center) {
-                    MetronomeView(viewModel: MetronomeViewModel())
-                    PlayRecView(viewModel: trackViewModel)
+                    MetronomeView(trackViewModel: trackViewModel, metronomeViewModel: metronomeViewModel)
+                    PlayRecView(trackViewModel: trackViewModel, metronomeViewModel: metronomeViewModel)
                 }
                 .frame(width: geometry.size.width / 3)
                 .frame(minHeight: geometry.size.height)
             }
         }
         .padding(40)
+        .ignoresSafeArea(.all)
     }
-
 }
 
 struct ContentView_Previews: PreviewProvider {

@@ -9,8 +9,8 @@ import Foundation
 import SwiftUI
 
 struct MetronomeView: View {
-    @ObservedObject var viewModel: MetronomeViewModel
-    @State private var isPressed = false
+    @ObservedObject var trackViewModel: TrackViewModel
+    @ObservedObject var metronomeViewModel: MetronomeViewModel
     @State private var showingTempoPicker = false
     
     var body: some View {
@@ -18,7 +18,7 @@ struct MetronomeView: View {
             Button(action: {
                 showingTempoPicker = true
             }) {
-                Text("\(viewModel.tempo) BPM")
+                Text("\(metronomeViewModel.tempo) BPM")
                     .foregroundColor(.primary)
                     .padding()
                     .overlay(
@@ -30,7 +30,7 @@ struct MetronomeView: View {
                 VStack {
                     Text("Select Tempo")
                         .font(.headline)
-                    Picker("Tempo", selection: $viewModel.tempo) {
+                    Picker("Tempo", selection: $metronomeViewModel.tempo) {
                         ForEach(40...240, id: \.self) { bpm in
                             Text("\(bpm) BPM").tag(bpm)
                         }
@@ -41,22 +41,17 @@ struct MetronomeView: View {
             }
             
             Button(action: {
-                viewModel.toggleMetronome()
-                isPressed.toggle()
+                metronomeViewModel.isActivated.toggle()
             }) {
                 Image(systemName: "metronome")
-                    .foregroundColor(isPressed ? Color.white : Color.black)
+                    .foregroundColor(metronomeViewModel.isActivated ? Color.white : Color.black)
                     .padding()
-                    .background(isPressed ? Color.black : Color.clear)
+                    .background(metronomeViewModel.isActivated ? Color.black : Color.clear)
                     .cornerRadius(10) 
                     .overlay(
                         RoundedRectangle(cornerRadius: 10)
                             .stroke(.black, lineWidth: 2)
                     )
-            }
-            .buttonStyle(PlainButtonStyle())
-            .onChange(of: viewModel.isPlaying) { _ in
-                isPressed = viewModel.isPlaying
             }
         }
     }

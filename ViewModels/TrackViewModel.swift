@@ -32,8 +32,8 @@ class TrackViewModel: ObservableObject {
         }
     }
     
-    // Add a beat to the trackModel directly, calculating the offset from the recording start
-    func addBeat(padID: Int) {
+    func trackPlayedSound(padID: Int) {
+        AudioPlaybackService.shared.playSound(named: AudioConfig.mapPadIDToDrumFile(padID))
         guard let start = recordingStartTime else { return }
         let currentTime = Date()
         var beatTime = currentTime.timeIntervalSince(start)

@@ -9,13 +9,14 @@ import Foundation
 import SwiftUI
 
 struct DrumPadView: View {
-    @ObservedObject var viewModel: DrumPadViewModel
+    let padID: Int
+    @ObservedObject var trackViewModel: TrackViewModel
     @State private var isPressed = false
     
     var body: some View {
         GeometryReader { geometry in
             let size = min(geometry.size.width, geometry.size.height)
-            Text(viewModel.soundName.uppercased())
+            Text(AudioConfig.mapPadIDToDrumFile(padID))
                 .foregroundColor(.black)
                 .bold()
                 .frame(width: size, height: size)
@@ -30,7 +31,7 @@ struct DrumPadView: View {
                         .onChanged { _ in
                             if isPressed == false {
                                 isPressed = true
-                                viewModel.playSound()
+                                trackViewModel.trackPlayedSound(padID: padID)
                             }
                         }
                         .onEnded { _ in isPressed = false }

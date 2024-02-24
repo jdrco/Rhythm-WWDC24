@@ -27,7 +27,7 @@ struct DrumPadGridView: View {
                     HStack(spacing: spacing) {
                         ForEach(0..<numberOfColumns, id: \.self) { column in
                             let padID = row * numberOfColumns + column
-                            DrumPadView(viewModel: DrumPadViewModel(padID: padID, trackViewModel: trackViewModel))
+                            DrumPadView(padID: padID, trackViewModel: trackViewModel)
                                 .frame(width: width, height: padHeight)
                         }
                     }
