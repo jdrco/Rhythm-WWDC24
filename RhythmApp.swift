@@ -6,6 +6,7 @@ struct RhythmApp: App {
         WindowGroup {
             ContentView()
                 .environmentObject(AudioEngineService.shared)
+                .environmentObject(AudioPlaybackService.shared)
         }
     }
 }

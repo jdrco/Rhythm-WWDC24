@@ -24,6 +24,8 @@ class TrackViewModel: ObservableObject {
     private var timer: Timer?
     private var currentBeat = 1
     
+    private var audioPlaybackService = AudioPlaybackService.shared
+    
     init(tempo: Int, numberOfBars: Int) {
         self.tempo = tempo
         self.numberOfBars = numberOfBars
@@ -46,7 +48,7 @@ class TrackViewModel: ObservableObject {
     }
     
     func trackPlayedSound(padID: Int) {
-        AudioPlaybackService.shared.playSound(named: AudioConfig.mapPadIDToDrumFile(padID))
+        audioPlaybackService.playSound(named: AudioConfig.mapPadIDToDrumFile(padID))
         guard let start = recordingStartTime else { return }
         let currentTime = Date()
         var beatTime = currentTime.timeIntervalSince(start)
@@ -64,12 +66,12 @@ class TrackViewModel: ObservableObject {
     
     func startPlayback() {
         isPlaying = true
-        AudioPlaybackService.shared.loopTrack(trackModel)
+        audioPlaybackService.loopTrack(trackModel)
     }
     
     func stopPlayback() {
         guard isPlaying else { return }
-        AudioPlaybackService.shared.stopPlayback()
+        audioPlaybackService.stopPlayback()
         isPlaying = false
     }
     
@@ -84,9 +86,9 @@ class TrackViewModel: ObservableObject {
     private func playMetronomeSound() {
         if metronomeActivated {
             if currentBeat == 1 {
-                AudioPlaybackService.shared.playSound(named: "metronome")
+                audioPlaybackService.playSound(named: "metronome")
             } else {
-                AudioPlaybackService.shared.playSound(named: "metronomeLow")
+                audioPlaybackService.playSound(named: "metronomeLow")
             }
         }
         // Increment and wrap the current beat counter

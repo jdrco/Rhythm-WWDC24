@@ -1,7 +1,8 @@
 import SwiftUI
 
 struct ContentView: View {
-    @EnvironmentObject var engineService: AudioEngineService
+    @EnvironmentObject var audioEngineService: AudioEngineService
+    @EnvironmentObject var audioPlaybackService: AudioPlaybackService
     let trackViewModel = TrackViewModel(tempo: 60, numberOfBars: 1)
     
     var body: some View {
@@ -18,8 +19,8 @@ struct ContentView: View {
                 
                 VStack(alignment: .center) {
                     Button(action: {
-                        AudioPlaybackService.shared.playSound(named: "click")
-                        engineService.isRunning.toggle()
+                        audioPlaybackService.playSound(named: "click")
+                        audioEngineService.isRunning.toggle()
                     }) {
                         Image(systemName: "power.circle")
                             .padding(10)

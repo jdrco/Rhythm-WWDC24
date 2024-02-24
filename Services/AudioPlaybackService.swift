@@ -7,10 +7,10 @@
 
 import AVFoundation
 
-class AudioPlaybackService {
+class AudioPlaybackService: ObservableObject {
     static let shared = AudioPlaybackService()
     private var playerPool = [AVAudioPlayerNode]()
-    private let engineService = AudioEngineService.shared
+    private let audioEngineService = AudioEngineService.shared
     private var isLooping = false
     private var loopTimer: Timer?
     private var activePlayers = [AVAudioPlayerNode]()
@@ -23,7 +23,7 @@ class AudioPlaybackService {
     private func preparePlayerPool(size: Int = 10) {
         for _ in 0..<size {
             let player = AVAudioPlayerNode()
-            engineService.audioEngine.attach(player)
+            audioEngineService.audioEngine.attach(player)
             playerPool.append(player)
         }
     }
@@ -31,7 +31,7 @@ class AudioPlaybackService {
     private func getPlayerFromPool() -> AVAudioPlayerNode? {
         if playerPool.isEmpty {
             let player = AVAudioPlayerNode()
-            engineService.audioEngine.attach(player)
+            audioEngineService.audioEngine.attach(player)
             return player
         } else {
             return playerPool.removeFirst()
@@ -50,8 +50,8 @@ class AudioPlaybackService {
         guard let audioFile = loadAudioFile(named: soundName) else { return }
         
         if let player = getPlayerFromPool() {
-            engineService.audioEngine.attach(player)
-            engineService.audioEngine.connect(player, to: engineService.audioEngine.mainMixerNode, format: audioFile.processingFormat)
+            audioEngineService.audioEngine.attach(player)
+            audioEngineService.audioEngine.connect(player, to: audioEngineService.audioEngine.mainMixerNode, format: audioFile.processingFormat)
             player.scheduleFile(audioFile, at: time, completionHandler: {
                 // Return the player to the pool after playing
                 DispatchQueue.main.async { [weak self] in
@@ -59,8 +59,8 @@ class AudioPlaybackService {
                 }
             })
             
-            if !engineService.audioEngine.isRunning {
-                engineService.startEngine()
+            if !audioEngineService.audioEngine.isRunning {
+                audioEngineService.startEngine()
             }
             
             player.play()
@@ -82,8 +82,8 @@ class AudioPlaybackService {
         }
         
         // No need to reset engine if it's already running
-        if !engineService.audioEngine.isRunning {
-            engineService.startEngine()
+        if !audioEngineService.audioEngine.isRunning {
+            audioEngineService.startEngine()
         }
         
         for beat in track.beats {
@@ -144,7 +144,7 @@ class AudioPlaybackService {
         let sampleTime = AVAudioFramePosition(Double(beat.startTime) * sampleRate)
         let time = AVAudioTime(sampleTime: sampleTime, atRate: sampleRate)
         
-        engineService.audioEngine.connect(player, to: engineService.audioEngine.mainMixerNode, format: audioFile.processingFormat)
+        audioEngineService.audioEngine.connect(player, to: audioEngineService.audioEngine.mainMixerNode, format: audioFile.processingFormat)
         player.scheduleFile(audioFile, at: time, completionHandler: nil)
     }
 }
