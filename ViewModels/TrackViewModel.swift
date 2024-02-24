@@ -24,6 +24,7 @@ class TrackViewModel: ObservableObject {
             print("Start recording")
             trackModel.beats.removeAll()
             recordingStartTime = Date()
+            startPlayback()
         } else {
             print("Stop recording")
             self.stopPlayback()
@@ -50,7 +51,6 @@ class TrackViewModel: ObservableObject {
     }
     
     func startPlayback() {
-        guard !isRecording, !isPlaying else { return }
         isPlaying = true
         AudioPlaybackService.shared.loopTrack(trackModel)
     }
@@ -62,6 +62,7 @@ class TrackViewModel: ObservableObject {
     }
     
     func clearTrack() {
+        stopPlayback()
         trackModel = TrackModel(tempo: trackModel.tempo, numberOfBars: trackModel.numberOfBars)
         isRecording = false
         isPlaying = false
