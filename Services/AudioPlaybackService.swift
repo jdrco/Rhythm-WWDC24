@@ -96,7 +96,7 @@ class AudioPlaybackService: ObservableObject {
             }
             
             if let player = getPlayerFromPool() {
-                setupPlaybackFor(player: player, with: audioFile, atBeat: beat)
+                setupPlaybackFor(player: player, with: audioFile, atBeat: beat, barDuration: barDuration)
                 activePlayers.append(player)
             }
         }
@@ -141,9 +141,11 @@ class AudioPlaybackService: ObservableObject {
         }
     }
     
-    private func setupPlaybackFor(player: AVAudioPlayerNode, with audioFile: AVAudioFile, atBeat beat: Beat) {
+    private func setupPlaybackFor(player: AVAudioPlayerNode, with audioFile: AVAudioFile, atBeat beat: Beat, barDuration: CGFloat) {
         let sampleRate = audioFile.processingFormat.sampleRate
-        let sampleTime = AVAudioFramePosition(Double(beat.startTime) * sampleRate)
+        // Take into account when we should play in a later bar
+        let absoluteStartTime = beat.startTime + Double(beat.barNumber) * barDuration
+        let sampleTime = AVAudioFramePosition(absoluteStartTime * sampleRate)
         let time = AVAudioTime(sampleTime: sampleTime, atRate: sampleRate)
         
         audioEngineService.audioEngine.connect(player, to: audioEngineService.audioEngine.mainMixerNode, format: audioFile.processingFormat)
