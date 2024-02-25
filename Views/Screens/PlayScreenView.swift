@@ -7,54 +7,6 @@
 
 import SwiftUI
 
-struct BarGrid: View {
-    let numberOfBars: Int
-    let currentBeat: Int
-    let visualCurrentBeat: Int
-    let isPlaying: Bool
-    let isRecording: Bool
-    let beatsPerBar: Int
-    
-    var body: some View {
-        HStack(spacing: 0) {
-            ForEach(0..<numberOfBars * beatsPerBar, id: \.self) { beatIndex in
-                VStack {
-                    if ((visualCurrentBeat == 0 && beatIndex == numberOfBars * beatsPerBar - 1) ||
-                        beatIndex == visualCurrentBeat - 1) && (isPlaying || isRecording) {
-                        Rectangle()
-                            .fill(Color.yellow)
-                            .frame(width: 3)
-                    } else {
-                        Rectangle()
-                            .fill(Color.yellow.opacity(0.5))
-                            .frame(width: 2)
-                    }
-                    Spacer()
-                }
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-            }
-        }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .border(Color.black, width: 1)
-    }
-}
-
-struct BeatGrid: View {
-    let numberOfBeats: Int = AudioConfig.drumFiles.count
-    
-    var body: some View {
-        VStack(spacing: 0) {
-            ForEach(0..<numberOfBeats, id: \.self) { _ in
-                Divider()
-                    .background(Color.black)
-                Spacer()
-            }
-        }
-    }
-}
-
-
-
 struct PlayScreenView: View {
     @EnvironmentObject var audioEngineService: AudioEngineService
     @EnvironmentObject var audioPlaybackService: AudioPlaybackService
@@ -65,7 +17,7 @@ struct PlayScreenView: View {
             Color.gray
                 .frame(maxHeight: .infinity)
                 .cornerRadius(10)
-            BarGrid(numberOfBars: trackViewModel.numberOfBars, currentBeat: trackViewModel.currentBeat, visualCurrentBeat: trackViewModel.visualCurrentBeat, isPlaying: trackViewModel.isPlaying, isRecording: trackViewModel.isRecording, beatsPerBar: trackViewModel.beatsPerBar)
+            BarGrid(trackViewModel: trackViewModel)
             BeatGrid()
         }
         .overlay(
