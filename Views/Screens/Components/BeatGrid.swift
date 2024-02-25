@@ -20,7 +20,7 @@ struct BeatGrid: View {
             ZStack {
                 VStack(spacing: 0) {
                     ForEach(0..<numberOfBeats, id: \.self) { padID in
-                        Divider().background(Color.black)
+                        Divider().background(Color.white)
                         Spacer()
                     }
                 }
@@ -32,17 +32,24 @@ struct BeatGrid: View {
                     
                     ForEach(beatsForRow, id: \.startTime) { beat in
                         // Calculate x position based on beat
-                        let adjustedStartTime = min(beat.startTime, 3.5) // Ensure not to go over UI on right side. 
-                        let beatXPosition = padding + (adjustedStartTime * CGFloat(timeToPositionConversion)) + (CGFloat(beat.barNumber) * (barWidth))
+                        var adjustedStartTime: Double {
+                            if beat.startTime > 3.5 {
+                                return beat.startTime - 4.0 // TODO: fix for multiple bars
+                            } else {
+                                return beat.startTime
+                            }
+                        }
+                        let beatTimetoXPosition = adjustedStartTime * CGFloat(timeToPositionConversion)
+                        let beatXPositionAfterOffset = beatTimetoXPosition + (CGFloat(beat.barNumber) * (barWidth)) + padding
                         
                         // Calculate y position based on pad ID
                         let rowHeight = geometry.size.height / CGFloat(numberOfBeats)
                         let beatYPosition = rowHeight * CGFloat(padID) + rowHeight / 2
                         
                         Rectangle()
-                            .fill(Color.black)
+                            .fill(Color.cyan)
                             .frame(width: 10, height: rowHeight) // Width is placeholder for now as there is no hold duration logic yet.
-                            .position(x: beatXPosition, y: beatYPosition)
+                            .position(x: beatXPositionAfterOffset, y: beatYPosition)
                     }
                 }
             }

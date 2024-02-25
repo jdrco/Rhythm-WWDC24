@@ -11,6 +11,7 @@ import SwiftUI
 struct AudioControlView: View {
     @EnvironmentObject var audioEngineService: AudioEngineService
     @EnvironmentObject var audioPlaybackService: AudioPlaybackService
+    @EnvironmentObject var appViewModel: AppViewModel
     @ObservedObject var trackViewModel: TrackViewModel
     @State private var showingTempoPicker = false
     
@@ -27,6 +28,11 @@ struct AudioControlView: View {
                     }
                     if trackViewModel.isPlaying {
                         trackViewModel.isPlaying.toggle()
+                    }
+                    if !audioEngineService.isRunning {
+                        appViewModel.showIntro()
+                    } else {
+                        appViewModel.showTutorial()
                     }
                 }) {
                     Image(systemName: "power.circle")
@@ -53,7 +59,6 @@ struct AudioControlView: View {
                 .popover(isPresented: $showingTempoPicker) {
                     VStack {
                         Text("Select Tempo")
-                            .font(.headline)
                         Picker("Tempo", selection: $trackViewModel.tempo) {
                             ForEach(40...240, id: \.self) { bpm in
                                 Text("\(bpm) BPM").tag(bpm)

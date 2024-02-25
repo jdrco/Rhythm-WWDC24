@@ -11,19 +11,20 @@ import SwiftUI
 struct OptionControlView: View {
     @EnvironmentObject var audioEngineService: AudioEngineService
     @EnvironmentObject var audioPlaybackService: AudioPlaybackService
+    @EnvironmentObject var appViewModel: AppViewModel
     @ObservedObject var trackViewModel: TrackViewModel
     @State private var showingTempoPicker = false
     
     var body: some View {
         HStack {
             Button(action: {
-                // TODO: Learn mode
+                appViewModel.showTutorial()
             }) {
                 Text("LEARN")
-                    .foregroundColor(Color.black)
+                    .foregroundColor(appViewModel.currentScreen == AppViewModel.Screen.tutorial ? Color.white : Color.black)
                     .padding()
-                    .background(Color.clear)
-                    .cornerRadius(10) 
+                    .background(appViewModel.currentScreen == AppViewModel.Screen.tutorial ? Color.black : Color.clear)
+                    .cornerRadius(10)
                     .overlay(
                         RoundedRectangle(cornerRadius: 10)
                             .stroke(.black, lineWidth: 1.5)
@@ -32,13 +33,13 @@ struct OptionControlView: View {
             .disabled(!audioEngineService.isRunning)
             
             Button(action: {
-                // TODO: Play mode
+                appViewModel.showPlay()
             }) {
                 Text("PLAY")
-                    .foregroundColor(Color.black)
+                    .foregroundColor(appViewModel.currentScreen == AppViewModel.Screen.play ? Color.white : Color.black)
                     .padding()
-                    .background(Color.clear)
-                    .cornerRadius(10) 
+                    .background(appViewModel.currentScreen == AppViewModel.Screen.play ? Color.black : Color.clear)
+                    .cornerRadius(10)
                     .overlay(
                         RoundedRectangle(cornerRadius: 10)
                             .stroke(.black, lineWidth: 1.5)
@@ -50,10 +51,10 @@ struct OptionControlView: View {
                 trackViewModel.metronomeActivated.toggle()
             }) {
                 Text("TICK")
-                    .foregroundColor(trackViewModel.metronomeActivated ? Color.white : Color.black)
+                    .foregroundColor(trackViewModel.metronomeActivated || appViewModel.currentScreen == AppViewModel.Screen.play ? Color.white : Color.black)
                     .padding()
                     .background(trackViewModel.metronomeActivated ? Color.black : Color.clear)
-                    .cornerRadius(10) 
+                    .cornerRadius(10)
                     .overlay(
                         RoundedRectangle(cornerRadius: 10)
                             .stroke(.black, lineWidth: 1.5)

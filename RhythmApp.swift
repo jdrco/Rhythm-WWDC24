@@ -7,6 +7,7 @@ struct RhythmApp: App {
             ContentView()
                 .environmentObject(AudioEngineService.shared)
                 .environmentObject(AudioPlaybackService.shared)
+                .environmentObject(AppViewModel())
         }
     }
 }
