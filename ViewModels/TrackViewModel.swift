@@ -25,7 +25,7 @@ class TrackViewModel: ObservableObject {
             trackModel.numberOfBars = numberOfBars
         }
     }
-    @Published var beatsPerBar: Int = 4
+    @Published var beatsPerBar: Int
     private var timer: Timer?
     @Published var currentBeat = 0
     @Published var visualCurrentBeat = 0
@@ -33,10 +33,11 @@ class TrackViewModel: ObservableObject {
     
     private var audioPlaybackService = AudioPlaybackService.shared
     
-    init(tempo: Int, numberOfBars: Int) {
+    init(tempo: Int = 60, numberOfBars: Int = 1, beatsPerBar: Int = 4) {
         self.tempo = tempo
         self.numberOfBars = numberOfBars
-        self.trackModel = TrackModel(tempo: tempo, numberOfBars: numberOfBars)
+        self.beatsPerBar = beatsPerBar
+        self.trackModel = TrackModel(tempo: tempo, numberOfBars: numberOfBars, beatsPerBar: beatsPerBar)
     }
     
     func toggleRecording() {
@@ -68,7 +69,9 @@ class TrackViewModel: ObservableObject {
         
         print("Adjusted Hit on: \(beatTime), ID: \(padID)")
         
+        self.objectWillChange.send()
         trackModel.addBeat(padID: padID, startTime: beatTime)
+        print(trackModel.description)
     }
     
     func startPlayback() {
@@ -84,7 +87,7 @@ class TrackViewModel: ObservableObject {
     
     func clearTrack() {
         stopPlayback()
-        trackModel = TrackModel(tempo: trackModel.tempo, numberOfBars: trackModel.numberOfBars)
+        trackModel = TrackModel(tempo: trackModel.tempo, numberOfBars: trackModel.numberOfBars, beatsPerBar: trackModel.beatsPerBar)
         isRecording = false
         isPlaying = false
         recordingStartTime = nil

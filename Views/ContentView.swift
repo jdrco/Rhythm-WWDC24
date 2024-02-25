@@ -3,7 +3,7 @@ import SwiftUI
 struct ContentView: View {
     @EnvironmentObject var audioEngineService: AudioEngineService
     @EnvironmentObject var audioPlaybackService: AudioPlaybackService
-    let trackViewModel = TrackViewModel(tempo: 60, numberOfBars: 1)
+    let trackViewModel = TrackViewModel()
     let leftPortionSize = 0.64
     let rightPortionSize = 0.36
     

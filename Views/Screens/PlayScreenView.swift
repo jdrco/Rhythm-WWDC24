@@ -18,7 +18,9 @@ struct PlayScreenView: View {
                 .frame(maxHeight: .infinity)
                 .cornerRadius(10)
             BarGrid(trackViewModel: trackViewModel)
-            BeatGrid()
+                .padding(20)
+            BeatGrid(trackViewModel: trackViewModel)
+                .padding(20)
         }
         .overlay(
             RoundedRectangle(cornerRadius: 10)

@@ -17,10 +17,12 @@ class TrackModel {
     var beats: [Beat] = []
     var tempo: Int // BPM (beats per minute)
     var numberOfBars: Int
+    var beatsPerBar: Int
     
-    init(tempo: Int, numberOfBars: Int) {
+    init(tempo: Int, numberOfBars: Int, beatsPerBar: Int) {
         self.tempo = tempo
         self.numberOfBars = numberOfBars
+        self.beatsPerBar = beatsPerBar
     }
     
     func addBeat(padID: Int, startTime: TimeInterval) {
@@ -31,8 +33,7 @@ class TrackModel {
     // Calculate and return the total duration of the track based on the number of bars and tempo
     var totalDuration: TimeInterval {
         // Since there are 4 beats in a bar for 4/4 measure, and 60 seconds in a minute,
-        // total duration = (60 / tempo) * 4 * numberOfBars
-        return (60.0 / Double(tempo)) * 4.0 * Double(numberOfBars)
+        return (60.0 / Double(tempo)) * Double(beatsPerBar) * Double(numberOfBars)
     }
 }
 
@@ -40,12 +41,16 @@ extension TrackModel: CustomStringConvertible {
     var description: String {
         var description = "Track Model:\n"
         description += "Total Duration: \(totalDuration) seconds\n"
-        description += "Beats:\n"
+        description += "Beats: "
         
-        for (index, beat) in beats.enumerated() {
-            description += "Beat \(index + 1):\n"
-            description += "Pad ID: \(beat.padID)\n"
-            description += "Start Time: \(beat.startTime) seconds\n"
+        // Check if there are beats in the array
+        if !beats.isEmpty {
+            // Iterate through beats and concatenate the information
+            description += beats.map { beat in
+                return "(Pad ID: \(beat.padID), Start Time: \(beat.startTime) seconds)"
+            }.joined(separator: ", ")
+        } else {
+            description += "No beats"
         }
         
         return description
