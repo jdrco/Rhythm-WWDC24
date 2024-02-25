@@ -20,9 +20,16 @@ class TrackViewModel: ObservableObject {
             trackModel.tempo = tempo
         }
     }
-    @Published var numberOfBars: Int
+    @Published var numberOfBars: Int {
+        didSet {
+            trackModel.numberOfBars = numberOfBars
+        }
+    }
+    @Published var beatsPerBar: Int = 4
     private var timer: Timer?
-    private var currentBeat = 1
+    @Published var currentBeat = 0
+    @Published var visualCurrentBeat = 0
+    private var totalBeatsPlayed = 0
     
     private var audioPlaybackService = AudioPlaybackService.shared
     
@@ -54,7 +61,7 @@ class TrackViewModel: ObservableObject {
         var beatTime = currentTime.timeIntervalSince(start)
         
         // Calculate the duration of a single bar in seconds
-        let barDuration = 60.0 / Double(trackModel.tempo) * 4.0
+        let barDuration = 60.0 / Double(trackModel.tempo) * Double(beatsPerBar)
         
         // Apply circular buffer logic (loop time)
         beatTime = beatTime.truncatingRemainder(dividingBy: barDuration)
@@ -85,14 +92,16 @@ class TrackViewModel: ObservableObject {
     
     private func playMetronomeSound() {
         if metronomeActivated {
-            if currentBeat == 1 {
+            if currentBeat == 0 {
                 audioPlaybackService.playSound(named: "metronome")
             } else {
                 audioPlaybackService.playSound(named: "metronomeLow")
             }
         }
         // Increment and wrap the current beat counter
-        currentBeat = (currentBeat % 4) + 1
+        currentBeat = (currentBeat + 1) % 4
+        totalBeatsPlayed += 1
+        visualCurrentBeat = totalBeatsPlayed % (4 * numberOfBars)
     }
     
     func startMetronome() {
@@ -115,6 +124,8 @@ class TrackViewModel: ObservableObject {
     
     func resetMetronome() {
         stopMetronome()
-        currentBeat = 1
+        currentBeat = 0
+        totalBeatsPlayed = 0
+        visualCurrentBeat = 0
     }
 }

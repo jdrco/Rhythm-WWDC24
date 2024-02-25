@@ -59,18 +59,10 @@ struct AudioControlView: View {
                 
             }
             
-            
-            Button(action: {
-                // TODO: Number of bars
-            }) {
-                Text("BARS")
-                    .foregroundColor(.primary)
-                    .padding()
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 10)
-                            .stroke(.black, lineWidth: 1.5)
-                    )
-            }
+            Stepper("\(trackViewModel.numberOfBars) BAR(S)",
+                value: $trackViewModel.numberOfBars,
+                in: 1...8
+            )
             .disabled(!audioEngineService.isRunning)
             
         }

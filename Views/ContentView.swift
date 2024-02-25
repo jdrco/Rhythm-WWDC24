@@ -11,7 +11,7 @@ struct ContentView: View {
         GeometryReader { geometry in
             VStack(spacing: 0) {
                 HStack() {
-                    MainScreenView()
+                    PlayScreenView(trackViewModel: trackViewModel)
                         .frame(width: geometry.size.width * (leftPortionSize))
                     .border(Color.red, width: 1)
                     AudioControlView(trackViewModel: trackViewModel)
@@ -36,7 +36,9 @@ struct ContentView: View {
             .border(Color.blue, width: 1)
         }
         .padding(50)
+        .environment(\.colorScheme, .light)
         .edgesIgnoringSafeArea(.all)
+        .background(Color.white)
     }
 }
 
