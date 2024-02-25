@@ -15,8 +15,8 @@ class TutorialViewModel: ObservableObject {
         TutorialModel(title: "Welcome to Rhythm!",
                       description: "This app is called 'Rhythm' and is my submission for SSC 2024. It's a drum machine that not only helps you grasp the theoretical concept of rhythm but also allows you to record and play your own beats."),
         
-        TutorialModel(title: "Understanding Notes",
-                      description: "In music, notes represent the duration of sound. Let's start with basic notes."),
+        TutorialModel(title: "Chapter 1: Understanding Notes",
+                      description: "In music, notes represent the duration of sound. There are a lot of notes and different variations, so start with basic notes."),
         
         TutorialModel(title: "Quarter Notes",
                       description: "A quarter note lasts for one beat. In a 4/4 time signature, there are four quarter notes in a bar.",
@@ -28,29 +28,32 @@ class TutorialViewModel: ObservableObject {
         
         // TODO: Add more notes + images
         
-        TutorialModel(title: "Time Signatures",
-                      description: "A time signature tells you how many beats are in each bar. 'Rhythm' uses a 4/4 time signature, meaning there are four beats per bar."),
+        TutorialModel(title: "Chapter 2: Time Signatures",
+                      description: "A time signature defines the beat structure in music, indicating how many beats are in each bar and the note value of each beat. This app uses 4/4 time signature which means there are four quarter-note beats per bar."),
         
-        TutorialModel(title: "Bars and Beats",
-                      description: "Understanding bars in a 4/4 time signature is crucial. Each bar contains four beats, and the type of note determines how these beats are filled."),
+        TutorialModel(title: "Chapter 3: Bars and Measures",
+                      description: "Bars (aka measures), segment music into sections defined by the time signature. In a 4/4 time signature, each bar contains four beats. This organization aids musicians in reading music and keeping time, ensuring cohesive rhythm and synchronization during playback or ensemble performance."),
+
+        TutorialModel(title: "Chapter 4: Tempo",
+                      description: "Tempo is the speed of the music, measured in beats per minute (BPM). A higher BPM means a faster tempo. Feel free to press the play button with 'tick' set on and change the value of 'tempo' to hear different tempos!"),
         
-        TutorialModel(title: "The Concept of Tempo",
-                      description: "Tempo is the speed of the music, measured in beats per minute (BPM). A higher BPM means a faster tempo."),
+        TutorialModel(title: "Chapter 5: Let's make some noise!",
+                      description: "Now that we know the basics of rhythm, let's make our own beat!"),
         
-        TutorialModel(title: "Recording Your Beat",
-                      description: "To record, simply tap the record button and play the drum pads. Your beats will be recorded in real-time."),
+        TutorialModel(title: "Recording your beat!",
+                      description: "To record a beat, simply tap the record button and play the drum pads. Your beats will be recorded in real-time and you can hear it loop."),
         
         TutorialModel(title: "Playing Your Beat",
-                      description: "After recording, hit the play button to hear your creation."),
+                      description: "After recording, hit the 'START' button to hear your creation."),
         
         TutorialModel(title: "Erasing Your Track",
                       description: "Made a mistake? No worries! You can erase your track and start over."),
         
-        TutorialModel(title: "Interactive Tutorial: Recording",
-                      description: "Let's try recording a beat. Follow the visual cues on the next page to play along."),
+        TutorialModel(title: "Chapter 6: Final Challenge",
+                      description: "Let's see if you can replicate the following beat. Follow the visual cues on this page to play along."),
         
-        TutorialModel(title: "Live Example",
-                      description: "Here's a visual guide for when to hit the pads. Try to replicate this rhythm to make your own beat."),
+        TutorialModel(title: "The End",
+                      description: "I think you're ready to start producing beats on your own! You can press the 'PLAY' button to start with a fresh canvas."),
     ]
 
 

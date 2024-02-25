@@ -17,29 +17,33 @@ struct DrumPadView: View {
     var body: some View {
         GeometryReader { geometry in
             let size = min(geometry.size.width, geometry.size.height)
-            Text(AudioConfig.mapPadIDToDrumFile(padID))
-                .foregroundColor(.black)
-                .bold()
-                .frame(width: size, height: size)
-                .background(isPressed ? Color.gray : Color.white)
-                .cornerRadius(10)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 10)
-                        .stroke(.black, lineWidth: 1.5)
-                )
-                .gesture(
-                    DragGesture(minimumDistance: 0)
-                        .onChanged { _ in
-                            if isPressed == false && audioEngineService.isRunning {
-                                isPressed = true
-                                trackViewModel.trackPlayedSound(padID: padID)
-                            }
+            ZStack {
+                // Square shape
+                Rectangle()
+                    .foregroundColor(isPressed ? Color.gray : Color.white)
+                    .frame(width: size, height: size)
+                    .cornerRadius(10)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 10)
+                            .stroke(.black, lineWidth: 1.5)
+                    )
+                
+                // Text placed on top of the square
+                Text(AudioConfig.mapPadIDToDrumFile(padID).uppercased())
+                    .foregroundColor(.black)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .offset(x: 0, y: -(size / 2) - 10)
+            }
+            .gesture(
+                DragGesture(minimumDistance: 0)
+                    .onChanged { _ in
+                        if isPressed == false && audioEngineService.isRunning {
+                            isPressed = true
+                            trackViewModel.trackPlayedSound(padID: padID)
                         }
-                        .onEnded { _ in isPressed = false }
-                )
+                    }
+                    .onEnded { _ in isPressed = false }
+            )
         }
     }
 }
-
-
-

@@ -32,11 +32,13 @@ struct TutorialScreenView: View {
                 HStack {
                     Button("Previous", action: tutorialViewModel.goToPreviousPage)
                         .disabled(tutorialViewModel.currentPage == 1)
+                        .border(Color.cyan, width: .infinity)
 
                     Spacer()
 
                     Button("Next", action: tutorialViewModel.goToNextPage)
                         .disabled(tutorialViewModel.currentPage == tutorialViewModel.getTotalPages())
+                        .border(Color.cyan, width: .infinity)
                 }
             }
         }
