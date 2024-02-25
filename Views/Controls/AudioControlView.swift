@@ -20,6 +20,14 @@ struct AudioControlView: View {
                 Button(action: {
                     audioPlaybackService.playSound(named: "click")
                     audioEngineService.isRunning.toggle()
+                    trackViewModel.stopPlayback()
+                    trackViewModel.stopMetronome()
+                    if trackViewModel.isRecording {
+                        trackViewModel.isRecording.toggle()
+                    }
+                    if trackViewModel.isPlaying {
+                        trackViewModel.isPlaying.toggle()
+                    }
                 }) {
                     Image(systemName: "power.circle")
                         .padding(10)
@@ -55,15 +63,15 @@ struct AudioControlView: View {
                     }
                     .padding()
                 }
-                .disabled(!audioEngineService.isRunning)
+                .disabled(!audioEngineService.isRunning || trackViewModel.isRecording)
                 
             }
             
             Stepper("\(trackViewModel.numberOfBars) BAR(S)",
                 value: $trackViewModel.numberOfBars,
-                in: 1...8
+                in: 1...4
             )
-            .disabled(!audioEngineService.isRunning)
+            .disabled(!audioEngineService.isRunning || trackViewModel.isRecording)
             
         }
     }

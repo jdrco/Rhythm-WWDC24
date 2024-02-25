@@ -29,6 +29,6 @@ struct BarGrid: View {
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .border(Color.cyan, width: 1)
+        .border(.black, width: 1)
     }
 }
