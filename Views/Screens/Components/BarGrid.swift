@@ -15,7 +15,7 @@ struct BarGrid: View {
             ForEach(0..<trackViewModel.numberOfBars * trackViewModel.beatsPerBar, id: \.self) { beatIndex in
                 VStack {
                     if ((trackViewModel.visualCurrentBeat == 0 && beatIndex == trackViewModel.numberOfBars * trackViewModel.beatsPerBar - 1) ||
-                            beatIndex == trackViewModel.visualCurrentBeat - 1) && (trackViewModel.isPlaying || trackViewModel.isRecording) {
+                        beatIndex == trackViewModel.visualCurrentBeat - 1) && (trackViewModel.isPlaying || trackViewModel.isRecording) {
                         Rectangle()
                             .fill(Color.yellow)
                             .frame(width: 3)
@@ -24,12 +24,11 @@ struct BarGrid: View {
                             .fill(Color.yellow.opacity(0.5))
                             .frame(width: 2)
                     }
-                    Spacer()
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .border(Color.black, width: 1)
+        .border(Color.cyan, width: 1)
     }
 }

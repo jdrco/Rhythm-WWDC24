@@ -64,13 +64,16 @@ class TrackViewModel: ObservableObject {
         // Calculate the duration of a single bar in seconds
         let barDuration = 60.0 / Double(trackModel.tempo) * Double(beatsPerBar)
         
+        // Calculate which bar the beat falls into
+        let barNumber = Int(beatTime / barDuration) % trackModel.numberOfBars
+        
         // Apply circular buffer logic (loop time)
         beatTime = beatTime.truncatingRemainder(dividingBy: barDuration)
         
         print("Adjusted Hit on: \(beatTime), ID: \(padID)")
         
         self.objectWillChange.send()
-        trackModel.addBeat(padID: padID, startTime: beatTime)
+        trackModel.addBeat(padID: padID, startTime: beatTime, barNumber: barNumber)
         print(trackModel.description)
     }
     

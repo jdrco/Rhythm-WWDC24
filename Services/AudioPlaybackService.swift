@@ -86,6 +86,8 @@ class AudioPlaybackService: ObservableObject {
             audioEngineService.startEngine()
         }
         
+        let barDuration = 60.0 / Double(track.tempo) * Double(track.beatsPerBar)
+        
         for beat in track.beats {
             let filename = AudioConfig.mapPadIDToDrumFile(beat.padID)
             guard let audioFile = loadAudioFile(named: filename) else {

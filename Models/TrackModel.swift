@@ -11,6 +11,7 @@ import SwiftUI
 struct Beat {
     let padID: Int
     let startTime: TimeInterval
+    let barNumber: Int
 }
 
 class TrackModel {
@@ -25,8 +26,8 @@ class TrackModel {
         self.beatsPerBar = beatsPerBar
     }
     
-    func addBeat(padID: Int, startTime: TimeInterval) {
-        let beat = Beat(padID: padID, startTime: startTime)
+    func addBeat(padID: Int, startTime: TimeInterval, barNumber: Int) {
+        let beat = Beat(padID: padID, startTime: startTime, barNumber: barNumber)
         beats.append(beat)
     }
     
@@ -47,7 +48,7 @@ extension TrackModel: CustomStringConvertible {
         if !beats.isEmpty {
             // Iterate through beats and concatenate the information
             description += beats.map { beat in
-                return "(Pad ID: \(beat.padID), Start Time: \(beat.startTime) seconds)"
+                return "(Pad ID: \(beat.padID), Start Time: \(beat.startTime) seconds), Bar: \(beat.barNumber)"
             }.joined(separator: ", ")
         } else {
             description += "No beats"
