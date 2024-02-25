@@ -1,5 +1,5 @@
 //
-//  BarGrid.swift
+//  BeatLines.swift
 //  
 //
 //  Created by Jared Drueco on 2024-02-24.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct BarGrid: View {
+struct BeatLines: View {
     @ObservedObject var trackViewModel: TrackViewModel
     
     var body: some View {

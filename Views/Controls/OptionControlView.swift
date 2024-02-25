@@ -51,7 +51,7 @@ struct OptionControlView: View {
                 trackViewModel.metronomeActivated.toggle()
             }) {
                 Text("TICK")
-                    .foregroundColor(trackViewModel.metronomeActivated || appViewModel.currentScreen == AppViewModel.Screen.play ? Color.white : Color.black)
+                    .foregroundColor(trackViewModel.metronomeActivated ? Color.white : Color.black)
                     .padding()
                     .background(trackViewModel.metronomeActivated ? Color.black : Color.clear)
                     .cornerRadius(10)

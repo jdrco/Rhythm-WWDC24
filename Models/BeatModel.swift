@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-struct Beat {
+struct BeatModel {
     let padID: Int
     let startTime: TimeInterval
     let barNumber: Int

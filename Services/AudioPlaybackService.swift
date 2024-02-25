@@ -141,7 +141,7 @@ class AudioPlaybackService: ObservableObject {
         }
     }
     
-    private func setupPlaybackFor(player: AVAudioPlayerNode, with audioFile: AVAudioFile, atBeat beat: Beat, barDuration: CGFloat) {
+    private func setupPlaybackFor(player: AVAudioPlayerNode, with audioFile: AVAudioFile, atBeat beat: BeatModel, barDuration: CGFloat) {
         let sampleRate = audioFile.processingFormat.sampleRate
         // Take into account when we should play in a later bar
         let absoluteStartTime = beat.startTime + Double(beat.barNumber) * barDuration

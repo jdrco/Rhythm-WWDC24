@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 class TrackModel {
-    var beats: [Beat] = []
+    var beats: [BeatModel] = []
     var tempo: Int // In beats per minute
     var numberOfBars: Int
     var beatsPerBar: Int
@@ -21,7 +21,7 @@ class TrackModel {
     }
     
     func addBeat(padID: Int, startTime: TimeInterval, barNumber: Int) {
-        let beat = Beat(padID: padID, startTime: startTime, barNumber: barNumber)
+        let beat = BeatModel(padID: padID, startTime: startTime, barNumber: barNumber)
         beats.append(beat)
     }
     

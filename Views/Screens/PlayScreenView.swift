@@ -24,8 +24,7 @@ struct PlayScreenView: View {
                 }
             }
             ZStack {
-                BarGrid(trackViewModel: trackViewModel)
-                BeatGrid(trackViewModel: trackViewModel)
+                BeatTracker(trackViewModel: trackViewModel)
             }
         }
         .padding(20)
