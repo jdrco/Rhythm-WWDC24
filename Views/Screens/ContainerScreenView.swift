@@ -27,7 +27,7 @@ struct ContainerScreenView: View {
                 case .play:
                     PlayScreenView(trackViewModel: trackViewModel)
                         .border(Color.red, width: 1)
-                case .tutorial:
+                case .tutorialTheory:
                     if let tutorialViewModel = appViewModel.tutorialViewModel {
                         TutorialTheoryScreenView(tutorialViewModel: tutorialViewModel)
                     }

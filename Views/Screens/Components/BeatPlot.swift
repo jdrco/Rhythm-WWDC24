@@ -14,6 +14,10 @@ struct BeatPlot: View {
     var body: some View {
         GeometryReader { geometry in
             // Calculate x offset and convertion
+            let totalDuration = trackViewModel.trackModel.totalDuration
+            let numberOfBars = trackViewModel.numberOfBars
+            let barDuration = totalDuration / Double(numberOfBars)
+            
             let barWidth = geometry.size.width / CGFloat(trackViewModel.numberOfBars)
             let padding: CGFloat = (geometry.size.width / CGFloat(trackViewModel.beatsPerBar * trackViewModel.numberOfBars)) / 2
             let timeToPositionConversion = geometry.size.width / trackViewModel.trackModel.totalDuration

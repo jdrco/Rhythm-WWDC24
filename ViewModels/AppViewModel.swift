@@ -13,7 +13,7 @@ class AppViewModel: ObservableObject {
     @Published var tutorialLiveViewModel: TutorialLiveViewModel? = nil
     
     enum Screen {
-        case intro, play, tutorial, tutorialLive
+        case intro, play, tutorialTheory, tutorialLive
     }
     
     func showIntro() {
@@ -28,7 +28,7 @@ class AppViewModel: ObservableObject {
         if tutorialViewModel == nil {
             tutorialViewModel = TutorialViewModel(appViewModel: self)
         }
-        currentScreen = .tutorial
+        currentScreen = .tutorialTheory
     }
     
     func showTutorialLive() {

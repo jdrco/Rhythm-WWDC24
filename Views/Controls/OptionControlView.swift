@@ -21,9 +21,9 @@ struct OptionControlView: View {
                 appViewModel.showTutorial()
             }) {
                 Text("LEARN")
-                    .foregroundColor(appViewModel.currentScreen == AppViewModel.Screen.tutorial || appViewModel.currentScreen == AppViewModel.Screen.tutorialLive ? Color.white : Color.black)
+                    .foregroundColor(appViewModel.currentScreen == AppViewModel.Screen.tutorialTheory || appViewModel.currentScreen == AppViewModel.Screen.tutorialLive ? Color.white : Color.black)
                     .padding()
-                    .background(appViewModel.currentScreen == AppViewModel.Screen.tutorial || appViewModel.currentScreen == AppViewModel.Screen.tutorialLive ? Color.black : Color.clear)
+                    .background(appViewModel.currentScreen == AppViewModel.Screen.tutorialTheory || appViewModel.currentScreen == AppViewModel.Screen.tutorialLive ? Color.black : Color.clear)
                     .cornerRadius(10)
                     .overlay(
                         RoundedRectangle(cornerRadius: 10)

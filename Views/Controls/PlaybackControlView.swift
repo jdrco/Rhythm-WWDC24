@@ -9,6 +9,7 @@ import SwiftUI
 
 struct PlaybackControlView: View {
     @EnvironmentObject var audioEngineService: AudioEngineService
+    @EnvironmentObject var appViewModel: AppViewModel
     @ObservedObject var trackViewModel: TrackViewModel
     
     var body: some View {
@@ -23,9 +24,7 @@ struct PlaybackControlView: View {
                     trackViewModel.resetMetronome()
                 }
             }) {
-                Image(systemName: trackViewModel.isRecording ? "stop.circle" : "record.circle")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
+                Text("REC")
                     .padding(10)
                     .foregroundColor(trackViewModel.isRecording ? .red : .black)
                     .background(trackViewModel.isRecording ? Color.black : Color.clear)
@@ -35,10 +34,10 @@ struct PlaybackControlView: View {
                             .stroke(.black, lineWidth: 1.5)
                     )
             }
-            .disabled(!audioEngineService.isRunning)
+            .disabled(!audioEngineService.isRunning || appViewModel.currentScreen == AppViewModel.Screen.tutorialTheory)
             
             
-            // Play/Stop Button
+            // Start/Stop Button
             Button(action: {
                 if trackViewModel.isPlaying {
                     trackViewModel.stopPlayback()
@@ -48,9 +47,7 @@ struct PlaybackControlView: View {
                     trackViewModel.startMetronome()
                 }
             }) {
-                Image(systemName: "play.circle")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
+                Text("START")
                     .padding(10)
                     .foregroundColor(trackViewModel.isPlaying ? .white : .black)
                     .background(trackViewModel.isPlaying ? Color.black : Color.clear)
@@ -60,15 +57,14 @@ struct PlaybackControlView: View {
                             .stroke(.black, lineWidth: 1.5)
                     )
             }
-            .disabled(trackViewModel.isRecording || !audioEngineService.isRunning)
+            .disabled(trackViewModel.isRecording || !audioEngineService.isRunning || appViewModel.currentScreen == AppViewModel.Screen.tutorialTheory)
             
             // Clear Button
             Button(action: {
                 trackViewModel.clearTrack()
                 trackViewModel.stopMetronome()
             }) {
-                Image(systemName: "trash.circle")
-                    .resizable()
+                Text("CLEAR")
                     .aspectRatio(contentMode: .fit)
                     .padding(10)
                     .foregroundColor(.black)
@@ -78,7 +74,7 @@ struct PlaybackControlView: View {
                             .stroke(.black, lineWidth: 1.5)
                     )
             }
-            .disabled(!audioEngineService.isRunning)
+            .disabled(!audioEngineService.isRunning || appViewModel.currentScreen == AppViewModel.Screen.tutorialTheory)
         }
         .frame(height: 50)
         .padding()
