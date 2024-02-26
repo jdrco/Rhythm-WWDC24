@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct TutorialTheoryScreenView: View {
-    @ObservedObject var tutorialViewModel: TutorialViewModel
+    @ObservedObject var tutorialViewModel: TutorialTheoryViewModel
     
     var body: some View {
         VStack {

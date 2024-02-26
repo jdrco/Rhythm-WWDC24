@@ -18,9 +18,8 @@ struct DrumPadView: View {
         GeometryReader { geometry in
             let size = min(geometry.size.width, geometry.size.height)
             ZStack {
-                // Square shape
                 Rectangle()
-                    .foregroundColor(isPressed ? Color.gray : Color.white)
+                    .foregroundColor(isPressed ? Color.black : Color.white)
                     .frame(width: size, height: size)
                     .cornerRadius(10)
                     .overlay(
@@ -28,7 +27,6 @@ struct DrumPadView: View {
                             .stroke(.black, lineWidth: 1.5)
                     )
                 
-                // Text placed on top of the square
                 Text(AudioConfig.mapPadIDToDrumFile(padID).uppercased())
                     .foregroundColor(.black)
                     .frame(maxWidth: .infinity, alignment: .leading)

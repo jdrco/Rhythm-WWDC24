@@ -15,15 +15,17 @@ struct OptionControlView: View {
     @ObservedObject var trackViewModel: TrackViewModel
     @State private var showingTempoPicker = false
     
+    
     var body: some View {
-        HStack {
+        HStack(spacing: 10) {
             Button(action: {
                 appViewModel.showTutorial()
             }) {
                 Text("LEARN")
                     .foregroundColor(appViewModel.currentScreen == AppViewModel.Screen.tutorialTheory || appViewModel.currentScreen == AppViewModel.Screen.tutorialLive ? Color.white : Color.black)
                     .padding()
-                    .background(appViewModel.currentScreen == AppViewModel.Screen.tutorialTheory || appViewModel.currentScreen == AppViewModel.Screen.tutorialLive ? Color.black : Color.clear)
+                    .frame(minWidth: 0, maxWidth: .infinity)
+                    .background(appViewModel.currentScreen == AppViewModel.Screen.tutorialTheory || appViewModel.currentScreen == AppViewModel.Screen.tutorialLive ? Color.gray : Color.clear)
                     .cornerRadius(10)
                     .overlay(
                         RoundedRectangle(cornerRadius: 10)
@@ -38,7 +40,8 @@ struct OptionControlView: View {
                 Text("PLAY")
                     .foregroundColor(appViewModel.currentScreen == AppViewModel.Screen.play ? Color.white : Color.black)
                     .padding()
-                    .background(appViewModel.currentScreen == AppViewModel.Screen.play ? Color.black : Color.clear)
+                    .frame(minWidth: 0, maxWidth: .infinity)
+                    .background(appViewModel.currentScreen == AppViewModel.Screen.play ? Color.gray : Color.clear)
                     .cornerRadius(10)
                     .overlay(
                         RoundedRectangle(cornerRadius: 10)
@@ -53,7 +56,8 @@ struct OptionControlView: View {
                 Text("TICK")
                     .foregroundColor(trackViewModel.metronomeActivated ? Color.white : Color.black)
                     .padding()
-                    .background(trackViewModel.metronomeActivated ? Color.black : Color.clear)
+                    .frame(minWidth: 0, maxWidth: .infinity) // Match button widths
+                    .background(trackViewModel.metronomeActivated ? Color.gray : Color.clear)
                     .cornerRadius(10)
                     .overlay(
                         RoundedRectangle(cornerRadius: 10)
@@ -62,7 +66,6 @@ struct OptionControlView: View {
             }
             .disabled(!audioEngineService.isRunning)
         }
+        .frame(maxWidth: .infinity)
     }
 }
-
-

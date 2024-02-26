@@ -38,6 +38,5 @@ struct DrumPadGridView: View {
             }
             .frame(minHeight: 0, maxHeight: .infinity, alignment: .top)
         }
-        .border(Color.green, width: 1)
     }
 }

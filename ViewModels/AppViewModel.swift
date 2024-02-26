@@ -9,7 +9,7 @@ import Foundation
 
 class AppViewModel: ObservableObject {
     @Published var currentScreen: Screen = .intro
-    @Published var tutorialViewModel: TutorialViewModel? = nil
+    @Published var tutorialViewModel: TutorialTheoryViewModel? = nil
     @Published var tutorialLiveViewModel: TutorialLiveViewModel? = nil
     
     enum Screen {
@@ -26,7 +26,7 @@ class AppViewModel: ObservableObject {
     
     func showTutorial() {
         if tutorialViewModel == nil {
-            tutorialViewModel = TutorialViewModel(appViewModel: self)
+            tutorialViewModel = TutorialTheoryViewModel(appViewModel: self)
         }
         currentScreen = .tutorialTheory
     }

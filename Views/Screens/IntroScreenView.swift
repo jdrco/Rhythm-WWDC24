@@ -11,7 +11,7 @@ import Foundation
 struct IntroScreenView: View {
     
     var body: some View {
-        Text("Toggle on to start the app.")
+        Text("PRESS POWER TO START THE APP.")
             .foregroundStyle(Color.gray)
     }
 }

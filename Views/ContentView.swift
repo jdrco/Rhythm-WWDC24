@@ -17,22 +17,41 @@ struct ContentView: View {
                         .frame(width: geometry.size.width * (rightPortionSize))
                 }
                 .frame(maxWidth: .infinity)
-                .border(Color.red, width: 1)
                 
                 HStack() {
                     DrumPadGridView(trackViewModel: trackViewModel)
                         .frame(width: geometry.size.width * (leftPortionSize))
                     VStack {
+                        VStack(alignment: .leading, spacing: 5) {
+                            Text("OPTIONS")
+                                .font(.headline)
+                                .foregroundColor(.black)
+                            Rectangle()
+                                .frame(height: 2)
+                                .foregroundColor(.black)
+                                .padding([.bottom])
+                        }
                         OptionControlView(trackViewModel: trackViewModel)
+                        Spacer()
+                        Spacer()
+                        VStack(alignment: .leading, spacing: 5) {
+                            Text("PLAY / REC")
+                                .font(.headline)
+                                .foregroundColor(.black)
+                            Rectangle()
+                                .frame(height: 2)
+                                .foregroundColor(.black)
+                                .padding(.bottom, 25)
+                        }
                         PlaybackControlView(trackViewModel: trackViewModel)
+                        Spacer()
                     }
+                    .padding(40)
                     .frame(width: geometry.size.width * (rightPortionSize))
                 }
                 .frame(maxWidth: .infinity)
-                .border(Color.red, width: 1)
             }
             .frame(maxHeight: geometry.size.height)
-            .border(Color.blue, width: 1)
         }
         .padding(50)
         .environment(\.font, .system(size: 14, weight: .light, design: .monospaced))

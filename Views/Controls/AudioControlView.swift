@@ -14,9 +14,19 @@ struct AudioControlView: View {
     @EnvironmentObject var appViewModel: AppViewModel
     @ObservedObject var trackViewModel: TrackViewModel
     @State private var showingTempoPicker = false
+    @State private var showingBarPicker = false
     
     var body: some View {
-        VStack {
+        VStack(alignment: .leading) {
+            VStack(alignment: .leading, spacing: 5) {
+                Text("RHYHTM - A DRUM MACHINE")
+                    .font(.headline)
+                    .foregroundColor(.black)
+                Rectangle()
+                    .frame(height: 2)
+                    .foregroundColor(.black)
+                    .padding(.bottom, 25)
+            }
             HStack {
                 Button(action: {
                     audioPlaybackService.playSound(named: "click")
@@ -37,19 +47,22 @@ struct AudioControlView: View {
                     }
                 }) {
                     Image(systemName: "power.circle")
-                        .padding(10)
+                        .font(.system(size: 20))
                         .foregroundColor(.black)
-                        .background(Color.clear)
-                        .cornerRadius(10)
+                        .background(Circle().fill(audioEngineService.isRunning ? Color.green : Color.clear))
+                        .padding(30)
                         .overlay(
-                            RoundedRectangle(cornerRadius: 10)
+                            Circle()
                                 .stroke(.black, lineWidth: 1.5)
                         )
                 }
+                
+                Spacer()
+                
                 Button(action: {
                     showingTempoPicker = true
                 }) {
-                    Text("\(trackViewModel.tempo) BPM")
+                    Text("TEMPO: \(trackViewModel.tempo) BPM")
                         .foregroundColor(.primary)
                         .padding()
                         .overlay(
@@ -71,14 +84,35 @@ struct AudioControlView: View {
                 }
                 .disabled(!audioEngineService.isRunning || trackViewModel.isRecording)
                 
+                Spacer()
+                
+                Button(action: {
+                    showingBarPicker = true
+                }) {
+                    Text("# BAR: \(trackViewModel.numberOfBars) BARS")
+                        .foregroundColor(.primary)
+                        .padding()
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 10)
+                                .stroke(.black, lineWidth: 1.5)
+                        )
+                }
+                .popover(isPresented: $showingBarPicker) {
+                    VStack {
+                        Text("Select Number of Bars")
+                        Picker("Bars", selection: $trackViewModel.numberOfBars) {
+                            ForEach(1...4, id: \.self) { bar in
+                                Text("\(bar) bars").tag(bar)
+                            }
+                        }
+                        .pickerStyle(WheelPickerStyle())
+                    }
+                    .padding()
+                }
+                .disabled(!audioEngineService.isRunning || trackViewModel.isRecording)
             }
-            
-            Stepper("\(trackViewModel.numberOfBars) BAR(S)",
-                value: $trackViewModel.numberOfBars,
-                in: 1...4
-            )
-            .disabled(!audioEngineService.isRunning || trackViewModel.isRecording)
-            
         }
+        .padding(40)
+        .frame(maxWidth: .infinity, alignment: .leading)
     }
 }

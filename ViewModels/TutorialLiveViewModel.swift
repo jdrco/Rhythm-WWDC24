@@ -34,13 +34,10 @@ class TutorialLiveViewModel: ObservableObject {
                           description: "Hit the 'START' button to hear your beat.\nPress the 'STOP' button before continuing"),
             
             TutorialModel(title: "Erasing Your Track",
-                          description: "Made a mistake? No worries! You can erase your track and start over."),
+                          description: "Made a mistake? No worries!\nYou can erase your track and start over."),
             
             TutorialModel(title: "Configuration your Drum Machine",
-                          description: "You can play around with 'tempo', number of 'bars', and 'metronome' toggle!"),
-            
-//            TutorialModel(title: "Chapter 6: Final Challenge",
-//                          description: "Let's see if you can replicate the following beat. Follow the visual cues on this page to play along."),
+                          description: "You can configure and play around with\n'tempo', number of 'bars', and 'metronome' features!"),
             
             TutorialModel(title: "The End",
                           description: "I think you're ready to start producing beats on your own!\nYou can press the 'PLAY' button to exit tutorial mode.")

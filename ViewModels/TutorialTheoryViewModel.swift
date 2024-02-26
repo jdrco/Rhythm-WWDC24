@@ -1,5 +1,5 @@
 //
-//  TutorialViewModel.swift
+//  TutorialTheoryViewModel.swift
 //  Rhythm-WWDC24
 //
 //  Created by Jared Drueco on 2024-02-25.
@@ -8,7 +8,7 @@
 import Foundation
 import Combine
 
-class TutorialViewModel: ObservableObject {
+class TutorialTheoryViewModel: ObservableObject {
     @Published var appViewModel: AppViewModel
     @Published var currentPage: Int = 1
     @Published var currentContent: TutorialModel?

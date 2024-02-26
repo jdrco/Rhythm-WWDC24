@@ -13,7 +13,7 @@ struct PlaybackControlView: View {
     @ObservedObject var trackViewModel: TrackViewModel
     
     var body: some View {
-        HStack {
+        HStack(spacing: 20) {
             // Record Button
             Button(action: {
                 trackViewModel.toggleRecording()
@@ -25,9 +25,10 @@ struct PlaybackControlView: View {
                 }
             }) {
                 Text("REC")
-                    .padding(10)
-                    .foregroundColor(trackViewModel.isRecording ? .red : .black)
-                    .background(trackViewModel.isRecording ? Color.black : Color.clear)
+                    .padding()
+                    .frame(minWidth: 0, maxWidth: .infinity)
+                    .foregroundColor(trackViewModel.isRecording ? .red : .white)
+                    .background(trackViewModel.isRecording ? .gray : .red)
                     .cornerRadius(10)
                     .overlay(
                         RoundedRectangle(cornerRadius: 10)
@@ -35,7 +36,6 @@ struct PlaybackControlView: View {
                     )
             }
             .disabled(!audioEngineService.isRunning || appViewModel.currentScreen == AppViewModel.Screen.tutorialTheory)
-            
             
             // Start/Stop Button
             Button(action: {
@@ -48,7 +48,8 @@ struct PlaybackControlView: View {
                 }
             }) {
                 Text("START")
-                    .padding(10)
+                    .frame(minWidth: 0, maxWidth: .infinity)
+                    .padding()
                     .foregroundColor(trackViewModel.isPlaying ? .white : .black)
                     .background(trackViewModel.isPlaying ? Color.black : Color.clear)
                     .cornerRadius(10)
@@ -65,10 +66,11 @@ struct PlaybackControlView: View {
                 trackViewModel.stopMetronome()
             }) {
                 Text("CLEAR")
-                    .aspectRatio(contentMode: .fit)
-                    .padding(10)
+                    .padding()
                     .foregroundColor(.black)
+                    .frame(minWidth: 0, maxWidth: .infinity)
                     .background(Color.clear)
+                    .cornerRadius(10)
                     .overlay(
                         RoundedRectangle(cornerRadius: 10)
                             .stroke(.black, lineWidth: 1.5)
@@ -76,7 +78,6 @@ struct PlaybackControlView: View {
             }
             .disabled(!audioEngineService.isRunning || appViewModel.currentScreen == AppViewModel.Screen.tutorialTheory)
         }
-        .frame(height: 50)
-        .padding()
+        .frame(maxWidth: .infinity)
     }
 }

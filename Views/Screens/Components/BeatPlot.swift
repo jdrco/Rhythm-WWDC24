@@ -21,20 +21,15 @@ struct BeatPlot: View {
             let barWidth = geometry.size.width / CGFloat(trackViewModel.numberOfBars)
             let padding: CGFloat = (geometry.size.width / CGFloat(trackViewModel.beatsPerBar * trackViewModel.numberOfBars)) / 2
             let timeToPositionConversion = geometry.size.width / trackViewModel.trackModel.totalDuration
-            // Iterate over each row (padID)
             ForEach(0..<numberOfBeats, id: \.self) { padID in
-                // Find the beats for the current row (padID)
                 let beatsForRow = trackViewModel.trackModel.beats.filter { $0.padID == padID }
-                
                 ForEach(beatsForRow, id: \.startTime) { beat in
                     // Calculate x position based on beat
                     let isLastBar = beat.barNumber == trackViewModel.numberOfBars - 1
                     var adjustedStartTime: Double {
-                        // Check if we need to adjust startTime based on the specific conditions
                         if beat.startTime > 3.5 && (isLastBar || trackViewModel.numberOfBars == 1) {
                             return beat.startTime - 4.0 * Double(beat.barNumber + 1)
                         } else {
-                            // Default case where startTime is not adjusted
                             return beat.startTime
                         }
                     }
@@ -47,7 +42,7 @@ struct BeatPlot: View {
                     
                     Rectangle()
                         .fill(Color.cyan)
-                        .frame(width: 10, height: rowHeight) // Width is placeholder for now as there is no hold duration logic yet.
+                        .frame(width: 10, height: rowHeight)
                         .position(x: beatXPositionAfterOffset, y: beatYPosition)
                 }
             }
