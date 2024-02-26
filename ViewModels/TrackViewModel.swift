@@ -33,11 +33,11 @@ class TrackViewModel: ObservableObject {
     
     private var audioPlaybackService = AudioPlaybackService.shared
     
-    init(tempo: Int = 60, numberOfBars: Int = 1, beatsPerBar: Int = 4) {
+    init(tempo: Int = 60, numberOfBars: Int = 1, beatsPerBar: Int = 4, beats: [BeatModel] = []) {
         self.tempo = tempo
         self.numberOfBars = numberOfBars
         self.beatsPerBar = beatsPerBar
-        self.trackModel = TrackModel(tempo: tempo, numberOfBars: numberOfBars, beatsPerBar: beatsPerBar)
+        self.trackModel = TrackModel(tempo: tempo, numberOfBars: numberOfBars, beatsPerBar: beatsPerBar, beats: beats)
     }
     
     func toggleRecording() {
@@ -46,12 +46,11 @@ class TrackViewModel: ObservableObject {
             print("Start recording")
             trackModel.beats.removeAll()
             recordingStartTime = Date()
-            startPlayback()
+            loopPlayback()
         } else {
             print("Stop recording")
             stopPlayback()
             recordingStartTime = nil
-            // TODO: process/save the recording as needed
         }
     }
     
@@ -77,15 +76,18 @@ class TrackViewModel: ObservableObject {
         print(trackModel.description)
     }
     
-    func startPlayback() {
+    func loopPlayback() {
         isPlaying = true
         audioPlaybackService.loopTrack(trackModel)
     }
     
+    
     func stopPlayback() {
         guard isPlaying else { return }
         audioPlaybackService.stopPlayback()
-        isPlaying = false
+        DispatchQueue.main.async {
+            self.isPlaying = false
+        }
     }
     
     func clearTrack() {

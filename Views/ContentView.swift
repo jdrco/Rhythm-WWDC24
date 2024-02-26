@@ -37,8 +37,8 @@ struct ContentView: View {
         .padding(50)
         .environment(\.font, .system(size: 14, weight: .light, design: .monospaced))
         .edgesIgnoringSafeArea(.all)
-//        .environment(\.colorScheme, .light)
-//        .background(Color.white)
+        .environment(\.colorScheme, .light)
+        .background(Color.white)
     }
 }
 

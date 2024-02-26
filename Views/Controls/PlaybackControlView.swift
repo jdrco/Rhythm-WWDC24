@@ -44,7 +44,7 @@ struct PlaybackControlView: View {
                     trackViewModel.stopPlayback()
                     trackViewModel.stopMetronome()
                 } else {
-                    trackViewModel.startPlayback()
+                    trackViewModel.loopPlayback()
                     trackViewModel.startMetronome()
                 }
             }) {

@@ -31,6 +31,7 @@ struct AudioControlView: View {
                     }
                     if !audioEngineService.isRunning {
                         appViewModel.showIntro()
+                        audioEngineService.stopEngine()
                     } else {
                         appViewModel.showTutorial()
                     }

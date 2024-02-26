@@ -14,10 +14,11 @@ class TrackModel {
     var numberOfBars: Int
     var beatsPerBar: Int
     
-    init(tempo: Int, numberOfBars: Int, beatsPerBar: Int) {
+    init(tempo: Int, numberOfBars: Int, beatsPerBar: Int, beats: [BeatModel] = []) {
         self.tempo = tempo
         self.numberOfBars = numberOfBars
         self.beatsPerBar = beatsPerBar
+        self.beats = beats
     }
     
     func addBeat(padID: Int, startTime: TimeInterval, barNumber: Int) {

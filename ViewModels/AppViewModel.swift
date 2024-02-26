@@ -9,12 +9,13 @@ import Foundation
 
 class AppViewModel: ObservableObject {
     @Published var currentScreen: Screen = .intro
+    @Published var tutorialViewModel: TutorialViewModel? = nil
+    @Published var tutorialLiveViewModel: TutorialLiveViewModel? = nil
     
     enum Screen {
-        case intro, play, tutorial
+        case intro, play, tutorial, tutorialLive
     }
     
-    // Functions to change the screen
     func showIntro() {
         currentScreen = .intro
     }
@@ -24,6 +25,16 @@ class AppViewModel: ObservableObject {
     }
     
     func showTutorial() {
+        if tutorialViewModel == nil {
+            tutorialViewModel = TutorialViewModel(appViewModel: self)
+        }
         currentScreen = .tutorial
+    }
+    
+    func showTutorialLive() {
+        if tutorialLiveViewModel == nil {
+            tutorialLiveViewModel = TutorialLiveViewModel(appViewModel: self)
+        }
+        currentScreen = .tutorialLive
     }
 }

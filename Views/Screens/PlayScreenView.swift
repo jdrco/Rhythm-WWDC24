@@ -19,26 +19,14 @@ struct PlayScreenView: View {
                 ForEach(0..<numberOfBeats, id: \.self) { padID in
                     Spacer()
                     Text("\(AudioConfig.mapPadIDToDrumFile(padID).uppercased())")
+                        .font(.system(size: 10, weight: .light, design: .monospaced))
                         .foregroundStyle(Color.white)
                     Spacer()
                 }
             }
-            ZStack {
-                BeatTracker(trackViewModel: trackViewModel)
-            }
+            BeatTracker(trackViewModel: trackViewModel)
         }
         .padding(20)
-        .overlay(
-            RoundedRectangle(cornerRadius: 10)
-                .stroke(.black, lineWidth: 1.5)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 10)
-                        .stroke(Color.black.opacity(0.4), lineWidth: 8)
-                        .blur(radius: 6)
-                        .offset(x: 0, y: 0)
-                )
-        )
-        .clipShape(RoundedRectangle(cornerRadius: 10))
         .frame(minHeight: 0, maxHeight: .infinity, alignment: .top)
     }
     

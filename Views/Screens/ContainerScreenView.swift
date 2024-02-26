@@ -28,7 +28,13 @@ struct ContainerScreenView: View {
                     PlayScreenView(trackViewModel: trackViewModel)
                         .border(Color.red, width: 1)
                 case .tutorial:
-                    TutorialScreenView()
+                    if let tutorialViewModel = appViewModel.tutorialViewModel {
+                        TutorialTheoryScreenView(tutorialViewModel: tutorialViewModel)
+                    }
+                case .tutorialLive:
+                    if let tutorialLiveViewModel = appViewModel.tutorialLiveViewModel {
+                        TutorialLiveScreenView(tutorialLiveViewModel: tutorialLiveViewModel, trackViewModel: trackViewModel)
+                    }
                 }
             }
             .overlay(
