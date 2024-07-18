@@ -4,9 +4,8 @@ This is my submission for the WWDC 2024 Student Swift Challenge
 
 Selected by Apple as one of the 350 worldwide winners 🎉
 
-<p align="center">
-<img width="884" alt="Screenshot 2024-05-12 at 5 40 51 PM" src="https://github.com/jdrco/Rhythm-WWDC24/assets/83478026/ea72c369-3e4a-4ff0-8682-2ef53b370aba">
-</p>
+![rhythm](https://github.com/user-attachments/assets/c5588772-70e5-4c55-b1ad-1967b1baca8e)
+
 
 ![SSC2024_Social_Static_16x9](https://github.com/jdrco/Rhythm-WWDC24/assets/83478026/225eaad6-b69a-4a84-9c02-95fdd31e415f)
 
@@ -25,7 +24,8 @@ Central to the project's audio functionalities is the use of Apple's AVFoundatio
 By combining these technologies, the drum machine app offers an engaging platform for users to explore rhythm and music production. The project underscores the potential of combining Swift's versatility, SwiftUI's UI prowess, and AVFoundation's audio processing capabilities to create educational and creative tools in the music technology space.
 
 ## Future Plans
-- [ ] Neumorphic redesign
+- [x] Neumorphic redesign hifi
+- [ ] Implement new design in SwiftUI
 - [ ] Turn into a full-fledged music sampler
 - [ ] Interactive tutorial on how to sample
 
